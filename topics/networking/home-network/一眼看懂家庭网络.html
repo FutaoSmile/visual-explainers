@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>一眼看懂家庭网络｜LAN、WAN、光猫、路由器、交换机、AP、AC 和小米 Mesh</title>
+  <style>
+    :root{--ink:#15313a;--muted:#607881;--paper:#f4f8f7;--card:#fff;--line:#dce9e6;--teal:#087e78;--teal-soft:#e0f4ef;--orange:#df7548;--orange-soft:#fff0e8;--blue:#366ba4;--blue-soft:#eaf2fb;--shadow:0 18px 45px #173d3b12}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 90% 0%,#dff5ed 0,transparent 32%),var(--paper);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.65}button{font:inherit}a{color:var(--teal);text-underline-offset:3px}button:focus-visible,a:focus-visible{outline:3px solid #ffad6e;outline-offset:3px}.wrap{max-width:1180px;margin:auto;padding:0 24px}header{padding:52px 0 24px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:99px;background:var(--teal-soft);color:#075d59;font-size:13px;font-weight:800;letter-spacing:.06em}h1{font-size:clamp(36px,4.2vw,54px);letter-spacing:-.055em;line-height:1.2;margin:18px 0 12px}h1 span{color:var(--teal)}.lead{color:#4b6971;font-size:clamp(16px,2vw,21px);max-width:760px;margin:0}.nav{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}.nav a{border:1px solid #c9e2db;background:#ffffffb8;text-decoration:none;color:#35545b;border-radius:99px;padding:7px 13px;font-weight:700;font-size:14px}.nav a:hover{background:var(--teal-soft)}
+    section{margin:36px 0}h2{font-size:clamp(25px,3vw,36px);line-height:1.25;letter-spacing:-.03em;margin:0 0 8px}.section-note{color:var(--muted);margin:0 0 20px}.panel{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}.hero-panel{padding:28px;overflow:hidden}.analogy{display:flex;align-items:flex-start;gap:16px;background:#eff8f5;padding:18px 22px;border-radius:18px;margin-bottom:24px}.analogy .big{font-size:28px;line-height:1}.analogy strong{display:block;font-size:19px}.analogy p{margin:4px 0 0;color:#49646b}
+    .flow{display:grid;grid-template-columns:1fr 44px 1fr 44px 1fr 44px 1.4fr;align-items:center;gap:5px}.node{border:2px solid var(--line);background:#fff;border-radius:19px;padding:18px 11px;min-height:130px;text-align:center;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s;display:flex;flex-direction:column;justify-content:center}.node:hover,.node.active{transform:translateY(-3px);border-color:var(--teal);box-shadow:0 12px 26px #087e7820}.node .symbol{font-size:32px;line-height:1.15}.node strong{font-size:18px;margin-top:4px}.node small{color:var(--muted);font-size:12px}.arrow{text-align:center;color:var(--teal);font-size:28px;font-weight:800}.branch{display:grid;grid-template-columns:1fr;gap:8px}.branch .node{min-height:82px;padding:10px 8px}.ac-strip{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 16px;border:1px dashed #c9d9ef;border-radius:15px;background:#f4f8fd}.ac-strip button{border:1px solid #b9cfe8;border-radius:10px;background:#fff;color:#275b91;font-weight:800;padding:7px 13px;cursor:pointer;white-space:nowrap}.ac-strip button.active{background:#e5f0fd}.ac-strip p{margin:0;color:#526c73;font-size:14px}.detail{margin-top:20px;border:1px solid #bfe5da;border-radius:17px;background:#f4fbf8;padding:16px 20px;min-height:98px}.detail strong{font-size:19px}.detail p{margin:3px 0 0;color:#49646b}.tip{font-size:14px;color:#657b7e;margin:18px 0 0}.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tag{font-size:13px;font-weight:800;padding:5px 10px;border-radius:99px}.tag.out{background:var(--orange-soft);color:#a8522e}.tag.in{background:var(--teal-soft);color:#086660}
+    .port-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.port{padding:26px;position:relative;overflow:hidden}.port:before{content:"";position:absolute;width:130px;height:130px;border-radius:50%;right:-35px;top:-55px;opacity:.5}.port.wan:before{background:#ffe1cb}.port.lan:before{background:#c7f0e5}.port .initial{font-weight:900;font-size:13px;letter-spacing:.12em}.port h3{font-size:30px;margin:7px 0}.port p{margin:0;color:#536d75}.port .port-example{margin-top:17px;padding:12px 14px;border-radius:12px;font-weight:800}.wan .port-example{background:var(--orange-soft);color:#a8522e}.lan .port-example{background:var(--teal-soft);color:#086660}.memory{margin-top:14px;padding:15px 20px;border:1px dashed #94cfc1;border-radius:15px;background:#f0faf5;font-weight:800;color:#0b6960}
+    .device-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.device{padding:20px;min-height:230px}.device .icon{font-size:31px}.device h3{font-size:20px;margin:8px 0 7px}.device p{color:#526c73;margin:0;font-size:15px}.device b{display:block;color:var(--teal);font-size:14px;margin-top:13px}.device:nth-child(2){border-top:5px solid var(--orange)}.device:nth-child(3){border-top:5px solid var(--blue)}.device:nth-child(4){border-top:5px solid var(--teal)}.device:nth-child(1){border-top:5px solid #9a72b0}.device:nth-child(5){border-top:5px solid #648dbd}.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.compare-card{padding:22px}.compare-card h3{font-size:21px;margin:0 0 8px}.compare-card p{color:#526c73;margin:0}.compare-card:nth-child(1){border-top:5px solid var(--teal)}.compare-card:nth-child(2){border-top:5px solid var(--blue)}.compare-card:nth-child(3){border-top:5px solid var(--orange)}.compare-note{margin-top:15px;padding:16px 20px;border-radius:15px;background:#eff8f5;color:#275a57;font-weight:700}
+    .scenario{padding:26px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.tabs button{border:1px solid var(--line);background:#f6faf8;color:#456169;border-radius:99px;padding:9px 16px;cursor:pointer;font-weight:800}.tabs button[aria-selected=true]{background:var(--teal);color:#fff;border-color:var(--teal)}.scenario-view{display:none}.scenario-view.active{display:block}.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}.chip{background:#f1f8f6;border:1px solid #d5e9e3;padding:9px 13px;border-radius:12px;font-weight:800}.chain .chev{color:var(--teal);font-weight:900}.scenario-view p{color:#526c73;margin:13px 0 0}.caution{background:#fff7e8;border-left:4px solid #e3a944;padding:12px 15px;border-radius:0 10px 10px 0}
+    .quiz{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.qcard{padding:22px}.qcard h3{font-size:17px;line-height:1.45;margin:0 0 14px}.answers{display:grid;gap:8px}.answers button{text-align:left;cursor:pointer;border:1px solid var(--line);background:#f8fbfa;border-radius:10px;padding:9px 11px;color:var(--ink)}.answers button:hover{border-color:var(--teal)}.answers button.correct{background:#e4f7eb;border-color:#42a46c}.answers button.wrong{background:#fff0ed;border-color:#e79b8e}.feedback{min-height:26px;margin:12px 0 0;font-size:14px;font-weight:700}.summary{padding:25px 28px;background:#123b3a;color:#ecf8f4}.summary h2{margin-bottom:10px}.summary p{margin:8px 0;color:#cce8e2}.summary strong{color:#fff}.summary a{color:#a7eee3}.footer{font-size:13px;color:#74878a;padding:10px 0 38px}
+    @media(max-width:900px){.flow{grid-template-columns:1fr 28px 1fr 28px 1fr}.flow>.arrow:nth-of-type(3),.branch{grid-column:1/-1}.flow>.arrow:nth-of-type(3){transform:rotate(90deg)}.branch{grid-template-columns:repeat(3,1fr)}.device-grid{grid-template-columns:repeat(2,1fr)}.compare-grid{grid-template-columns:1fr}.quiz{grid-template-columns:1fr}}@media(max-width:600px){header{padding-top:31px}.wrap{padding:0 16px}.hero-panel,.scenario{padding:18px}.analogy{padding:14px}.flow{grid-template-columns:1fr;gap:5px}.flow>.arrow{transform:rotate(90deg)}.flow>.arrow:nth-of-type(3){transform:rotate(90deg)}.node{min-height:96px}.branch{grid-column:auto;grid-template-columns:1fr}.port-grid,.device-grid{grid-template-columns:1fr}.device{min-height:0}.ac-strip{align-items:flex-start;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.node{transition:none}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="eyebrow">家庭网络 · 5 分钟入门</div>
+      <h1>从一根光纤，到家里的每一台设备。<br><span>一眼看懂 LAN、WAN 和五种角色。</span></h1>
+      <p class="lead">先记住一条路：外面的网络进家门，路由器负责“分配和带路”；有线口不够加交换机，无线覆盖不足可选 AP 或小米 Mesh。</p>
+      <nav class="nav" aria-label="页面导航"><a href="#map">看连接图</a><a href="#ports">认 LAN / WAN</a><a href="#devices">认五种角色</a><a href="#mesh">看小米 Mesh</a><a href="#wiring">照着接线</a><a href="#quiz">测一测</a></nav>
+    </header>
+    <main>
+      <section id="map">
+        <h2>01｜先看一张图</h2>
+        <p class="section-note">点一下图中的设备，会看到它在这条网络链路里的任务。</p>
+        <div class="panel hero-panel">
+          <div class="analogy"><span class="big" aria-hidden="true">🏠</span><div><strong>把家里的网络想成一栋楼</strong><p>光猫接入楼外的道路；路由器是门卫兼向导；门够用就不用交换机，不够才多开有线门；AP 用来扩大无线覆盖。</p></div></div>
+          <div class="flow" aria-label="互联网经光猫进入主路由器；主路由器可同时连接小米 Mesh 子节点、交换机和无线 AP">
+            <button class="node" data-detail="internet" aria-pressed="false"><span class="symbol" aria-hidden="true">☁️</span><strong>互联网</strong><small>家门外</small></button>
+            <span class="arrow" aria-hidden="true">→</span>
+            <button class="node" data-detail="ont" aria-pressed="false"><span class="symbol" aria-hidden="true">🔌</span><strong>光猫</strong><small>接入光纤</small></button>
+            <span class="arrow" aria-hidden="true">→</span>
+            <button class="node active" data-detail="router" aria-pressed="true"><span class="symbol" aria-hidden="true">🧭</span><strong>路由器</strong><small>WAN 进 · LAN 出</small></button>
+            <span class="arrow" aria-hidden="true">→</span>
+            <div class="branch">
+              <button class="node" data-detail="mesh" aria-pressed="false"><span class="symbol" aria-hidden="true">📡</span><strong>Mesh 子节点</strong><small>按需添加</small></button>
+              <button class="node" data-detail="switch" aria-pressed="false"><span class="symbol" aria-hidden="true">🧩</span><strong>交换机</strong><small>口不够才加</small></button>
+              <button class="node" data-detail="ap" aria-pressed="false"><span class="symbol" aria-hidden="true">📶</span><strong>AP</strong><small>覆盖不足才加</small></button>
+            </div>
+          </div>
+          <div class="ac-strip"><button type="button" data-detail="ac" aria-pressed="false">AC · 无线控制器</button><p>统一管理多个 AP；可能是独立设备，也可能集成在路由器中。它不在上网数据的必经路径上。</p></div>
+          <div class="ac-strip"><button type="button" data-detail="mesh" aria-pressed="false">小米 Mesh · 组网方式</button><p>子节点可用一根网线连接主路由；若还有可用网口，也能继续接电脑或交换机。</p></div>
+          <div class="detail" id="detail" role="status" aria-live="polite"><strong>路由器：决定数据往哪走</strong><p>通常用 WAN 口接上游，用 LAN 口接家里设备；一般还会给设备分配地址（DHCP），并让多台设备共用外网连接（NAT）。</p></div>
+          <div class="legend"><span class="tag out">WAN = 朝外 / 上游</span><span class="tag in">LAN = 朝内 / 家里</span></div>
+          <p class="tip">上图以“光猫桥接、路由器负责上网”为例。主路由可同时连接 Mesh 子节点、交换机和无线 AP，它们是三条并列分支，均按需要添加。</p>
+        </div>
+      </section>
+      <section id="ports">
+        <h2>02｜LAN 口和 WAN 口，到底怎么分？</h2>
+        <p class="section-note">字母不用死记，抓住“这个口朝哪边连”。</p>
+        <div class="port-grid">
+          <article class="panel port wan"><div class="initial">WIDE AREA NETWORK</div><h3>WAN 口</h3><p>广域网口。在家用路由器上，它通常连<strong>光猫或上一级网络</strong>，是这台路由器的“上游入口”。</p><div class="port-example">例：光猫网口 → 路由器 WAN 口</div></article>
+          <article class="panel port lan"><div class="initial">LOCAL AREA NETWORK</div><h3>LAN 口</h3><p>局域网口。通常连<strong>电脑、交换机、AP</strong> 等家中设备，属于这台路由器管理的本地网络。</p><div class="port-example">例：路由器 LAN 口 → 交换机</div></article>
+        </div>
+        <div class="memory">记忆口诀：<strong>WAN 往外，LAN 留家。</strong> 但它们是“相对于某台路由器”的角色，不是所有网线或接口永远固定的身份。</div>
+      </section>
+      <section id="devices">
+        <h2>03｜五种角色，各负责什么？</h2>
+        <p class="section-note">AC 是管理功能，可能独立成设备，也可能集成在路由器里。</p>
+        <div class="device-grid">
+          <article class="panel device"><div class="icon" aria-hidden="true">🔌</div><h3>光猫 / ONT</h3><p>把运营商的光纤接入转换成家里可用的以太网连接。</p><b>关键词：光纤入口</b></article>
+          <article class="panel device"><div class="icon" aria-hidden="true">🧭</div><h3>路由器</h3><p>连接不同网络，决定数据去向；家用场景通常兼做 DHCP 和 NAT。</p><b>关键词：网关 / 带路</b></article>
+          <article class="panel device"><div class="icon" aria-hidden="true">🧩</div><h3>交换机</h3><p>路由器自带的 LAN 口够用就不需要它；口不够时，它能把同一个局域网扩展给更多有线设备。</p><b>关键词：按需扩有线口</b></article>
+          <article class="panel device"><div class="icon" aria-hidden="true">📶</div><h3>无线 AP</h3><p>把有线局域网接入点延伸为 Wi-Fi，让手机等无线设备接入同一网络。</p><b>关键词：扩无线覆盖</b></article>
+          <article class="panel device"><div class="icon" aria-hidden="true">🎛️</div><h3>AC / 无线控制器</h3><p>统一管理多个 AP 的名称、密码和无线参数；不负责替代 AP 发出 Wi-Fi。</p><b>关键词：管多个 AP</b></article>
+        </div>
+      </section>
+      <section id="mesh">
+        <h2>04｜小米 Mesh 是什么？</h2>
+        <p class="section-note">它强调多台兼容路由器如何协同覆盖，不是又多出一种必须购买的设备。</p>
+        <div class="compare-grid">
+          <article class="panel compare-card"><h3>小米 Mesh</h3><p>一台作主路由，其他作子节点，协同提供 Wi-Fi。子节点可用<strong>一根网线</strong>作回程；若有剩余网口，还能接有线设备。</p></article>
+          <article class="panel compare-card"><h3>AC + AP</h3><p>AP 提供 Wi-Fi 接入；AC 统一管理多个 AP。AC 可能独立成设备，也可能集成在路由器中。</p></article>
+          <article class="panel compare-card"><h3>交换机</h3><p>只负责连接和扩展<strong>有线网口</strong>，不发 Wi-Fi。可接在主路由与 Mesh 子节点之间，也可接在子节点剩余网口后面。</p></article>
+        </div>
+        <div class="panel scenario" style="margin-top:14px"><h3 style="margin:0 0 8px">一根网线怎么接？</h3><div class="chain"><span class="chip">主路由 LAN</span><span class="chev">→</span><span class="chip">网线（可经过交换机）</span><span class="chev">→</span><span class="chip">Mesh 子节点上联口</span></div><div class="chain"><span class="chip">子节点剩余 LAN 口</span><span class="chev">→</span><span class="chip">电脑 / 交换机</span><span class="chev">→</span><span class="chip">更多有线设备</span></div><p class="section-note" style="margin:10px 0 0">前提是子节点有可用网口。不同小米型号的端口数量、上联口名称和供电方式不同，请以对应说明书为准。</p></div>
+        <div class="compare-note">一句话区分：AP 是“发 Wi-Fi 的角色”，Mesh 是“多个节点协同的方法”；交换机则管有线连接。支持 Mesh 的路由器也在充当 Wi-Fi 接入点。</div>
+      </section>
+      <section id="wiring">
+        <h2>05｜实际接线，按你家的情况选</h2>
+        <p class="section-note">设备名称相同，工作模式可能不同；先看光猫是否已经负责路由。</p>
+        <div class="panel scenario">
+          <div class="tabs" role="tablist" aria-label="接线场景">
+            <button type="button" role="tab" id="tab-bridge" aria-controls="view-bridge" aria-selected="true">光猫桥接 · 路由器拨号</button>
+            <button type="button" role="tab" id="tab-route" aria-controls="view-route" aria-selected="false">光猫已经在路由</button>
+          </div>
+          <div class="scenario-view active" id="view-bridge" role="tabpanel" aria-labelledby="tab-bridge">
+            <div class="chain"><span class="chip">光纤</span><span class="chev">→</span><span class="chip">光猫</span><span class="chev">→</span><span class="chip">路由器 WAN</span><span class="chev">→</span><span class="chip">路由器 LAN / Wi-Fi</span><span class="chev">→</span><span class="chip">家中设备</span></div>
+            <p>这时路由器通常负责拨号、分配家庭内网地址。它自带的 LAN 口够用就直接接设备；不够再接交换机。桥接光猫虽然可能有多个 LAN 口，但它们未必都能提供同一条上网连接：有的被运营商配置给 IPTV 等业务，具体取决于设备和运营商设置。</p>
+          </div>
+          <div class="scenario-view" id="view-route" role="tabpanel" aria-labelledby="tab-route">
+            <div class="chain"><span class="chip">光纤</span><span class="chev">→</span><span class="chip">光猫（已路由）</span><span class="chev">→</span><span class="chip">光猫 LAN / Wi-Fi</span><span class="chev">→</span><span class="chip">家中设备</span></div>
+            <p>光猫若已经承担路由和 DHCP，它可用的 LAN 口也可以直接接电脑等设备；口够用，就不需要交换机。若还想用另一台无线路由器增加网口或扩大覆盖，可把它设为 AP 模式，并按设备说明接线，这样设备通常仍在同一个局域网。</p>
+            <p class="caution">若光猫和下级路由器都以路由模式工作，常会形成双重 NAT；普通上网通常可用，但端口映射、游戏联机等场景可能更麻烦。</p>
+          </div>
+        </div>
+      </section>
+      <section id="quiz">
+        <h2>06｜四道题，确认记住了</h2>
+        <p class="section-note">点选答案，马上看解释。</p>
+        <div class="quiz">
+          <div class="panel qcard"><h3>电脑有线网口不够，通常加什么？</h3><div class="answers"><button data-answer="no">AP</button><button data-answer="yes">交换机</button></div><p class="feedback" aria-live="polite"></p></div>
+          <div class="panel qcard"><h3>某个房间 Wi-Fi 信号弱，通常加什么？</h3><div class="answers"><button data-answer="yes">AP 或兼容的 Mesh 子节点</button><button data-answer="no">普通交换机</button></div><p class="feedback" aria-live="polite"></p></div>
+          <div class="panel qcard"><h3>桥接光猫一般接到路由器哪个口？</h3><div class="answers"><button data-answer="no">LAN 口</button><button data-answer="yes">WAN 口</button></div><p class="feedback" aria-live="polite"></p></div>
+          <div class="panel qcard"><h3>多台 AP 想统一设置，谁来管理？</h3><div class="answers"><button data-answer="yes">AC</button><button data-answer="no">普通交换机</button></div><p class="feedback" aria-live="polite"></p></div>
+        </div>
+      </section>
+      <section class="panel summary"><h2>最后只记这一句</h2><p><strong>光猫接光纤，路由器管方向；交换机扩有线，AP 发 Wi-Fi，AC 管多个 AP，Mesh 管多节点协同；WAN 往外，LAN 留家。</strong></p><p>想看可缩放、可搜索的连接图？打开 <a href="家庭网络拓扑图.html">家庭网络拓扑图</a>。</p></section>
+    </main>
+    <footer class="footer">说明：不同运营商、设备型号与工作模式会改变实际端口名称和接法，接线前以设备管理界面和说明书为准。</footer>
+  </div>
+  <script>
+    const details={
+      internet:["互联网：家门外的大网络","运营商把外部网络连接送到你家；家里的手机、电脑通过路由器访问它。"],
+      ont:["光猫：光纤进家的入口","光猫（ONT）连接运营商光纤，也可能自带多个 LAN 口、路由和 Wi-Fi。多个物理网口能否都用于家庭上网，要看它的工作模式和运营商配置。"],
+      router:["路由器：决定数据往哪走","通常用 WAN 口接上游，用 LAN 口接家里设备；一般还会给设备分配地址（DHCP），并让多台设备共用外网连接（NAT）。"],
+      switch:["交换机：网口不够时再加","家用路由器通常已内置交换功能和多个 LAN 口；这些口够用就不用额外交换机。它主要用于增加有线口，或在另一个房间用一根网线接出多个口。"],
+      ap:["AP：把有线网络变成无线入口","它通过网线连入局域网，让手机等设备用 Wi-Fi 接入。它主要解决覆盖和无线接入问题。"],
+      ac:["AC：统一管理多个 AP","它可以是独立设备、软件，也可以集成在路由器里。它管多个 AP 的配置，不代替路由器决定上网方向，也不代替 AP 发 Wi-Fi。"],
+      mesh:["小米 Mesh：多台路由器协同覆盖","Mesh 是组网方式。子节点可用一根网线连接主路由或其后的交换机；如果还有可用 LAN 口，可继续接电脑或交换机。无线回程也可用，具体以型号支持为准。"]
+    };
+    document.querySelectorAll("[data-detail]").forEach(button=>button.addEventListener("click",()=>{
+      document.querySelectorAll("[data-detail]").forEach(el=>{el.classList.remove("active");el.setAttribute("aria-pressed","false")});
+      button.classList.add("active");button.setAttribute("aria-pressed","true");
+      const [title,body]=details[button.dataset.detail];
+      const box=document.querySelector("#detail");box.querySelector("strong").textContent=title;box.querySelector("p").textContent=body;
+    }));
+    document.querySelectorAll('[role="tab"]').forEach(tab=>tab.addEventListener("click",()=>{
+      document.querySelectorAll('[role="tab"]').forEach(el=>el.setAttribute("aria-selected","false"));
+      document.querySelectorAll(".scenario-view").forEach(el=>el.classList.remove("active"));
+      tab.setAttribute("aria-selected","true");document.querySelector("#"+tab.getAttribute("aria-controls")).classList.add("active");
+    }));
+    document.querySelectorAll(".qcard").forEach(card=>card.querySelectorAll("[data-answer]").forEach(button=>button.addEventListener("click",()=>{
+      card.querySelectorAll("[data-answer]").forEach(el=>el.classList.remove("correct","wrong"));
+      const right=button.dataset.answer==="yes";button.classList.add(right?"correct":"wrong");
+      card.querySelector(".feedback").textContent=right?"答对了！抓住了它的核心职责。":"再想想：交换机扩有线，AP 和 Mesh 子节点可扩 Wi-Fi，AC 管 AP；路由器 WAN 接上游。";
+    })));
+  </script>
+</body>
+</html>
+
