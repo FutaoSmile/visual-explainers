@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="archify 2.16.0-dev.0">
-  <title>家庭网络：Mesh 与 AC+AP</title>
+  <title>家庭网络拓扑示例｜光猫桥接、主路由拨号</title>
   <script>
     // Resolve the theme before first paint so light-preference users don't
     // see a dark flash. The toolbar script below re-applies with UI state.
@@ -4961,7 +4961,7 @@
            data-preset-badge-blueprint="蓝图 / 修订 01"
            data-preset-badge-editorial="编辑风格 / 现场笔记">
         <div class="pulse-dot"></div>
-        <h1>家庭网络：Mesh 与 AC+AP</h1>
+        <h1>家庭网络拓扑示例：光猫桥接</h1>
       </div>
       <a class="back-to-guide no-print" href="一眼看懂家庭网络.html">← 返回入门讲解页</a>
     </div>
@@ -5012,7 +5012,7 @@
     <div class="diagram-container" data-detail-level="read"
          data-preset-badge-editorial-plate="ARCHIFY / 图版 04">
       <svg viewBox="0 0 1170 694" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
-        <title id="archify-diagram-title">家庭网络：Mesh 与 AC+AP</title>
+        <title id="archify-diagram-title">家庭网络拓扑示例：光猫桥接</title>
         <desc id="archify-diagram-description">由 Archify 生成的架构图。</desc>
         <!-- Definitions -->
         <defs>
@@ -5062,8 +5062,8 @@
         <text data-detail="context" x="120" y="332" class="t-muted" font-size="9" text-anchor="middle">家门外的大网络</text>
         </g>
 
-        <g id="node-ont" data-node-id="ont" data-node-label="光猫" tabindex="0" role="button" aria-label="聚焦光猫，光纤接入, 架构组件" aria-pressed="false" data-node-kind="external" data-node-sublabel="光纤接入" data-node-context="架构组件">
-          <title>光猫 · 光纤接入 · 架构组件</title>
+        <g id="node-ont" data-node-id="ont" data-node-label="光猫" tabindex="0" role="button" aria-label="聚焦光猫，桥接转发, 架构组件" aria-pressed="false" data-node-kind="external" data-node-sublabel="桥接转发" data-node-context="架构组件">
+          <title>光猫 · 桥接转发 · 架构组件</title>
           <rect x="270" y="280" width="140" height="76" rx="6" class="c-mask"/>
           <rect x="270" y="280" width="140" height="76" rx="6" class="c-external" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(276 286) scale(0.6875)">
@@ -5071,11 +5071,11 @@
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="340" y="316" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">光猫</text>
-        <text data-detail="context" x="340" y="332" class="t-muted" font-size="9" text-anchor="middle">光纤接入</text>
+        <text data-detail="context" x="340" y="332" class="t-muted" font-size="9" text-anchor="middle">桥接转发</text>
         </g>
 
-        <g id="node-router" data-node-id="router" data-node-label="主路由器" tabindex="0" role="button" aria-label="聚焦主路由器，家庭网络的网关, 架构组件" aria-pressed="false" data-node-kind="security" data-node-sublabel="家庭网络的网关" data-node-context="架构组件">
-          <title>主路由器 · 家庭网络的网关 · 架构组件</title>
+        <g id="node-router" data-node-id="router" data-node-label="主路由器" tabindex="0" role="button" aria-label="聚焦主路由器，负责路由 / 拨号, 架构组件" aria-pressed="false" data-node-kind="security" data-node-sublabel="负责路由 / 拨号" data-node-context="架构组件">
+          <title>主路由器 · 负责路由 / 拨号 · 架构组件</title>
           <rect x="490" y="280" width="160" height="76" rx="6" class="c-mask"/>
           <rect x="490" y="280" width="160" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(496 286) scale(0.6875)">
@@ -5083,7 +5083,7 @@
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="570" y="316" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">主路由器</text>
-        <text data-detail="context" x="570" y="332" class="t-muted" font-size="9" text-anchor="middle">家庭网络的网关</text>
+        <text data-detail="context" x="570" y="332" class="t-muted" font-size="9" text-anchor="middle">负责路由 / 拨号</text>
         </g>
 
         <g id="node-mesh" data-node-id="mesh" data-node-label="小米 Mesh 子节点（可选）" tabindex="0" role="button" aria-label="聚焦小米 Mesh 子节点（可选），可有线或无线回程, 架构组件" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="可有线或无线回程" data-node-context="架构组件">
@@ -5423,30 +5423,33 @@
       <div class="card">
         <div class="card-header">
           <div class="card-dot cyan"></div>
-          <h3>主路由三条分支</h3>
+          <h3>先看本图前提</h3>
         </div>
         <ul>
-          <li>&bull; 主路由可分别连 Mesh 子节点、交换机和无线 AP</li>
+          <li>&bull; 本图为光猫桥接、主路由负责上网的示例</li>
+          <li>&bull; 若使用 PPPoE，宽带账号密码填在负责拨号的主路由；光猫负责拨号时则填在光猫</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot amber"></div>
-          <h3>Mesh 与交换机</h3>
+          <h3>下游按需选择</h3>
         </div>
         <ul>
-          <li>&bull; 本图两者分别接主路由；子节点有剩余 LAN 口时也能接有线设备</li>
+          <li>&bull; 主路由可分别连接 Mesh 子节点、交换机和无线 AP，不必全部购买</li>
+          <li>&bull; 图中是三条分支；不要再用网线把已连主路由的 Mesh 节点接回交换机，形成重复链路</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot violet"></div>
-          <h3>避免环路</h3>
+          <h3>无线切换与供电</h3>
         </div>
         <ul>
-          <li>&bull; 不要再将 Mesh 子节点接回同一台已连主路由的交换机</li>
+          <li>&bull; Mesh 或多 AP 可辅助漫游，但终端仍参与切换决定，不能保证始终连最近或最快的节点</li>
+          <li>&bull; 普通 LAN 口不默认供电；AP 按型号用电源适配器或兼容的 PoE 设备供电</li>
         </ul>
       </div>
     </div>
