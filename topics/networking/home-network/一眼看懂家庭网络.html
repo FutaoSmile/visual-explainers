@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>一眼看懂家庭网络｜LAN、WAN、光猫、路由器、交换机、AP、AC 和小米 Mesh</title>
+  <title>家庭网络入门与布网指南｜设备、术语、接线与布局</title>
+  <meta name="description" content="认识家庭网络中的光猫、路由器、交换机、AP、AC 与 Mesh，弄懂 LAN、WAN 等术语，了解常见接线方式，并根据房间覆盖和有线设备需求规划家庭网络。">
   <style>
     :root{--ink:#15313a;--muted:#607881;--paper:#f4f8f7;--card:#fff;--line:#dce9e6;--teal:#087e78;--teal-soft:#e0f4ef;--orange:#df7548;--orange-soft:#fff0e8;--blue:#366ba4;--blue-soft:#eaf2fb;--shadow:0 18px 45px #173d3b12}
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 90% 0%,#dff5ed 0,transparent 32%),var(--paper);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.65}button{font:inherit}a{color:var(--teal);text-underline-offset:3px}button:focus-visible,a:focus-visible{outline:3px solid #ffad6e;outline-offset:3px}.wrap{max-width:1180px;margin:auto;padding:0 24px}header{padding:52px 0 24px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:99px;background:var(--teal-soft);color:#075d59;font-size:13px;font-weight:800;letter-spacing:.06em}h1{font-size:clamp(36px,4.2vw,54px);letter-spacing:-.055em;line-height:1.2;margin:18px 0 12px}h1 span{color:var(--teal)}.lead{color:#4b6971;font-size:clamp(16px,2vw,21px);max-width:760px;margin:0}.nav{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}.nav a{border:1px solid #c9e2db;background:#ffffffb8;text-decoration:none;color:#35545b;border-radius:99px;padding:7px 13px;font-weight:700;font-size:14px}.nav a:hover{background:var(--teal-soft)}
@@ -14,6 +15,7 @@
     .device-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.device{padding:20px;min-height:230px}.device .icon{font-size:31px}.device h3{font-size:20px;margin:8px 0 7px}.device p{color:#526c73;margin:0;font-size:15px}.device b{display:block;color:var(--teal);font-size:14px;margin-top:13px}.device:nth-child(2){border-top:5px solid var(--orange)}.device:nth-child(3){border-top:5px solid var(--blue)}.device:nth-child(4){border-top:5px solid var(--teal)}.device:nth-child(1){border-top:5px solid #9a72b0}.device:nth-child(5){border-top:5px solid #648dbd}.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.compare-card{padding:22px}.compare-card h3{font-size:21px;margin:0 0 8px}.compare-card p{color:#526c73;margin:0}.compare-card:nth-child(1){border-top:5px solid var(--teal)}.compare-card:nth-child(2){border-top:5px solid var(--blue)}.compare-card:nth-child(3){border-top:5px solid var(--orange)}.compare-note{margin-top:15px;padding:16px 20px;border-radius:15px;background:#eff8f5;color:#275a57;font-weight:700}
     .scenario{padding:26px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.tabs button{border:1px solid var(--line);background:#f6faf8;color:#456169;border-radius:99px;padding:9px 16px;cursor:pointer;font-weight:800}.tabs button[aria-selected=true]{background:var(--teal);color:#fff;border-color:var(--teal)}.scenario-view{display:none}.scenario-view.active{display:block}.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}.chip{background:#f1f8f6;border:1px solid #d5e9e3;padding:9px 13px;border-radius:12px;font-weight:800}.chain .chev{color:var(--teal);font-weight:900}.scenario-view p{color:#526c73;margin:13px 0 0}.caution{background:#fff7e8;border-left:4px solid #e3a944;padding:12px 15px;border-radius:0 10px 10px 0}
     .quiz{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.qcard{padding:22px}.qcard h3{font-size:17px;line-height:1.45;margin:0 0 14px}.answers{display:grid;gap:8px}.answers button{text-align:left;cursor:pointer;border:1px solid var(--line);background:#f8fbfa;border-radius:10px;padding:9px 11px;color:var(--ink)}.answers button:hover{border-color:var(--teal)}.answers button.correct{background:#e4f7eb;border-color:#42a46c}.answers button.wrong{background:#fff0ed;border-color:#e79b8e}.feedback{min-height:26px;margin:12px 0 0;font-size:14px;font-weight:700}.summary{padding:25px 28px;background:#123b3a;color:#ecf8f4}.summary h2{margin-bottom:10px}.summary p{margin:8px 0;color:#cce8e2}.summary strong{color:#fff}.summary a{color:#a7eee3}.footer{font-size:13px;color:#74878a;padding:10px 0 38px}
+    .planning-card p{color:#526c73;margin:0}
     @media(max-width:900px){.flow{grid-template-columns:1fr 28px 1fr 28px 1fr}.flow>.arrow:nth-of-type(3),.branch{grid-column:1/-1}.flow>.arrow:nth-of-type(3){transform:rotate(90deg)}.branch{grid-template-columns:repeat(3,1fr)}.device-grid{grid-template-columns:repeat(2,1fr)}.compare-grid{grid-template-columns:1fr}.quiz{grid-template-columns:1fr}}@media(max-width:600px){header{padding-top:31px}.wrap{padding:0 16px}.hero-panel,.scenario{padding:18px}.analogy{padding:14px}.flow{grid-template-columns:1fr;gap:5px}.flow>.arrow{transform:rotate(90deg)}.flow>.arrow:nth-of-type(3){transform:rotate(90deg)}.node{min-height:96px}.branch{grid-column:auto;grid-template-columns:1fr}.port-grid,.device-grid{grid-template-columns:1fr}.device{min-height:0}.ac-strip{align-items:flex-start;flex-direction:column}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.node{transition:none}}
   </style>
@@ -21,10 +23,10 @@
 <body>
   <div class="wrap">
     <header>
-      <div class="eyebrow">家庭网络 · 5 分钟入门</div>
-      <h1>从一根光纤，到家里的每一台设备。<br><span>一眼看懂 LAN、WAN 和五种角色。</span></h1>
-      <p class="lead">先记住一条路：外面的网络进家门，路由器负责“分配和带路”；有线口不够加交换机，无线覆盖不足可选 AP 或小米 Mesh。</p>
-      <nav class="nav" aria-label="页面导航"><a href="#map">看连接图</a><a href="#ports">认 LAN / WAN</a><a href="#devices">认五种角色</a><a href="#mesh">看小米 Mesh</a><a href="#wiring">照着接线</a><a href="#quiz">测一测</a></nav>
+      <div class="eyebrow">家庭网络 · 设备、术语与布网</div>
+      <h1>家里的网络怎么搭？<br><span>先认设备和术语，再看接线与布局。</span></h1>
+      <p class="lead">从光猫、路由器到交换机、AP 和 Mesh：了解各自的用途、常见接法，并根据有线设备数量和房间 Wi-Fi 覆盖需求，规划适合自己家的网络。</p>
+      <nav class="nav" aria-label="页面导航"><a href="#map">看连接图</a><a href="#ports">认 LAN / WAN</a><a href="#devices">认设备</a><a href="#mesh">看 Mesh</a><a href="#wiring">看接线</a><a href="#planning">做布网规划</a><a href="#quiz">测一测</a></nav>
     </header>
     <main>
       <section id="map">
@@ -102,8 +104,18 @@
           </div>
         </div>
       </section>
+      <section id="planning">
+        <h2>06｜布网前，先做四个判断</h2>
+        <p class="section-note">先盘点需求，再决定要不要增加设备；不必把每一种设备都买齐。</p>
+        <div class="quiz">
+          <article class="panel qcard planning-card"><h3>① 哪些设备需要有线？</h3><p>列出电脑、电视、游戏机、NAS 等设备和所在房间，数清需要的网口。主路由的 LAN 口够用就直接接；不够或想在一个房间分出多个口，再加交换机。</p></article>
+          <article class="panel qcard planning-card"><h3>② 哪些房间 Wi-Fi 弱？</h3><p>先看实际使用位置和信号，再按需增加无线 AP 或 Mesh 子节点。能布网线时，可优先考虑有线回程；节点不要藏在金属柜或角落里。</p></article>
+          <article class="panel qcard planning-card"><h3>③ 谁负责当主路由？</h3><p>确认光猫是桥接还是路由模式，再决定下级路由器的工作模式。这样更容易把家中设备放在预期的同一网络，避免无意产生双重 NAT。</p></article>
+          <article class="panel qcard planning-card"><h3>④ 线和电源怎么到位？</h3><p>画出光猫、主路由、各房间网口和无线节点的位置，预留网线与供电。主路由可以同时连接交换机、AP 和 Mesh 子节点；它们都按需求选配。</p></article>
+        </div>
+      </section>
       <section id="quiz">
-        <h2>06｜四道题，确认记住了</h2>
+        <h2>07｜四道题，确认记住了</h2>
         <p class="section-note">点选答案，马上看解释。</p>
         <div class="quiz">
           <div class="panel qcard"><h3>电脑有线网口不够，通常加什么？</h3><div class="answers"><button data-answer="no">AP</button><button data-answer="yes">交换机</button></div><p class="feedback" aria-live="polite"></p></div>

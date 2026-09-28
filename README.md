@@ -6,7 +6,7 @@
 
 | 分类 | 专题 | 内容 |
 | --- | --- | --- |
-| 网络基础 | [家庭网络](topics/networking/home-network/README.md) | LAN / WAN、光猫、路由器、交换机、AP、AC 与 Mesh |
+| 网络基础 | [家庭网络入门与布网指南](topics/networking/home-network/README.md) | 认识设备与术语、理解接线和组网方式、按家庭需求规划有线与 Wi-Fi 覆盖 |
 
 ## 分类规则
 
