@@ -7,6 +7,7 @@
 | 分类 | 专题 | 内容 |
 | --- | --- | --- |
 | 网络基础 | [家庭网络入门与布网指南](networking/home-network/README.md) | 认识设备与术语、理解接线和组网方式、按家庭需求规划有线与 Wi-Fi 覆盖 |
+| 家庭用电 | [家庭用电图解指南](electricity/home-electricity/README.md) | 从电表到插座理解供电路径、保护器、故障现象与用电布局 |
 
 ## 分类规则
 
