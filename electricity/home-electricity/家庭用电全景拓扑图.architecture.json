@@ -5,30 +5,197 @@
     "title": "家庭用电全景图｜从电表到各个回路",
     "locale": "zh-CN",
     "quality_profile": "showcase",
-    "viewBox": [1220, 760]
+    "viewBox": [
+      1220,
+      570
+    ]
   },
   "components": [
-    { "id": "supply", "type": "external", "label": "公共供电", "sublabel": "住宅楼或小区配电", "pos": [50, 302], "size": [165, 82] },
-    { "id": "meter", "type": "database", "label": "电表", "sublabel": "记录用电量 kWh", "pos": [278, 302], "size": [165, 82] },
-    { "id": "panel", "type": "security", "label": "家庭配电箱", "sublabel": "总开关与分路保护", "pos": [506, 302], "size": [180, 82] },
-    { "id": "lights", "type": "frontend", "label": "照明回路", "sublabel": "房间灯具", "pos": [796, 92], "size": [170, 82] },
-    { "id": "sockets", "type": "frontend", "label": "普通插座回路", "sublabel": "客厅与卧室", "pos": [796, 232], "size": [170, 82] },
-    { "id": "kitchen", "type": "frontend", "label": "厨房回路", "sublabel": "按负载规划", "pos": [796, 372], "size": [170, 82] },
-    { "id": "wetarea", "type": "frontend", "label": "卫生间回路", "sublabel": "潮湿环境重点防护", "pos": [796, 512], "size": [170, 82] },
-    { "id": "appliance", "type": "external", "label": "具体电器", "sublabel": "用电发生在末端", "pos": [1034, 302], "size": [155, 82] }
+    {
+      "id": "supply",
+      "type": "external",
+      "label": "公共供电",
+      "sublabel": "住宅楼或小区配电",
+      "pos": [
+        50,
+        244
+      ],
+      "size": [
+        165,
+        82
+      ]
+    },
+    {
+      "id": "meter",
+      "type": "database",
+      "label": "电表",
+      "sublabel": "记录用电量 kWh",
+      "pos": [
+        278,
+        244
+      ],
+      "size": [
+        165,
+        82
+      ]
+    },
+    {
+      "id": "panel",
+      "type": "security",
+      "label": "家庭配电箱",
+      "sublabel": "总开关与分路保护",
+      "pos": [
+        506,
+        244
+      ],
+      "size": [
+        180,
+        82
+      ]
+    },
+    {
+      "id": "lights",
+      "type": "frontend",
+      "label": "照明回路",
+      "sublabel": "房间灯具",
+      "pos": [
+        796,
+        40
+      ],
+      "size": [
+        170,
+        82
+      ]
+    },
+    {
+      "id": "sockets",
+      "type": "frontend",
+      "label": "普通插座回路",
+      "sublabel": "客厅与卧室",
+      "pos": [
+        796,
+        165
+      ],
+      "size": [
+        170,
+        82
+      ]
+    },
+    {
+      "id": "kitchen",
+      "type": "frontend",
+      "label": "厨房回路",
+      "sublabel": "按负载规划",
+      "pos": [
+        796,
+        290
+      ],
+      "size": [
+        170,
+        82
+      ]
+    },
+    {
+      "id": "wetarea",
+      "type": "frontend",
+      "label": "卫生间回路",
+      "sublabel": "潮湿环境重点防护",
+      "pos": [
+        796,
+        415
+      ],
+      "size": [
+        170,
+        82
+      ]
+    },
+    {
+      "id": "appliance",
+      "type": "external",
+      "label": "具体电器",
+      "sublabel": "用电发生在末端",
+      "pos": [
+        1034,
+        244
+      ],
+      "size": [
+        155,
+        82
+      ]
+    }
   ],
   "connections": [
-    { "id": "supply_meter", "from": "supply", "to": "meter", "variant": "emphasis" },
-    { "id": "meter_panel", "from": "meter", "to": "panel", "variant": "emphasis" },
-    { "id": "panel_lights", "from": "panel", "to": "lights", "fromSide": "right", "toSide": "left" },
-    { "id": "panel_sockets", "from": "panel", "to": "sockets", "fromSide": "right", "toSide": "left" },
-    { "id": "panel_kitchen", "from": "panel", "to": "kitchen", "fromSide": "right", "toSide": "left" },
-    { "id": "panel_wetarea", "from": "panel", "to": "wetarea", "fromSide": "right", "toSide": "left" },
-    { "id": "sockets_appliance", "from": "sockets", "to": "appliance", "fromSide": "right", "toSide": "top" },
-    { "id": "kitchen_appliance", "from": "kitchen", "to": "appliance", "fromSide": "right", "toSide": "left" }
+    {
+      "id": "supply_meter",
+      "from": "supply",
+      "to": "meter",
+      "variant": "emphasis"
+    },
+    {
+      "id": "meter_panel",
+      "from": "meter",
+      "to": "panel",
+      "variant": "emphasis"
+    },
+    {
+      "id": "panel_lights",
+      "from": "panel",
+      "to": "lights",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "panel_sockets",
+      "from": "panel",
+      "to": "sockets",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "panel_kitchen",
+      "from": "panel",
+      "to": "kitchen",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "panel_wetarea",
+      "from": "panel",
+      "to": "wetarea",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "sockets_appliance",
+      "from": "sockets",
+      "to": "appliance",
+      "fromSide": "right",
+      "toSide": "top"
+    },
+    {
+      "id": "kitchen_appliance",
+      "from": "kitchen",
+      "to": "appliance",
+      "fromSide": "right",
+      "toSide": "left"
+    }
   ],
   "cards": [
-    { "dot": "cyan", "title": "先找三个位置", "items": ["电表负责计量；家庭配电箱负责把电分配到各回路。", "各家布局会不同，以现场标识和专业检查为准。"] },
-    { "dot": "amber", "title": "这是一张教学拓扑", "items": ["箭头表示供电关系，不表示火线或零线的实际接法。", "不得把本图当作施工图或带电操作指引。"] }
+    {
+      "dot": "cyan",
+      "title": "先找三个位置",
+      "items": [
+        "电表负责计量；家庭配电箱负责把电分配到各回路。",
+        "各家布局会不同，以现场标识和专业检查为准。"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "这是一张教学拓扑",
+      "items": [
+        "箭头表示供电关系，不表示火线或零线的实际接法。",
+        "不得把本图当作施工图或带电操作指引。"
+      ]
+    }
   ]
 }
