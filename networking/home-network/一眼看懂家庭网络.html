@@ -1,184 +1,1405 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
   <title>家庭网络入门与布网指南｜设备、术语、接线与布局</title>
   <meta name="description" content="认识光猫、路由器、交换机、AP、AC 与 Mesh，弄懂 LAN、WAN、PPPoE、PoE 等术语；比较拨号位置、AP 供电与无线漫游，并按房间覆盖和有线设备需求规划家庭网络。">
+  <script>
+    /* 在首次绘制前定好主题，避免浅色偏好用户看到深色闪一下。
+       优先级：URL 参数 > 上次选择 > 系统偏好。 */
+    (function () {
+      try {
+        var t = null;
+        try {
+          var p = new URLSearchParams(window.location.search).get('theme');
+          if (p === 'light' || p === 'dark') t = p;
+        } catch (_) {}
+        if (!t) { try { t = localStorage.getItem('home-network-theme'); } catch (_) {} }
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (_) {}
+    })();
+  </script>
   <style>
-    :root{--ink:#15313a;--muted:#607881;--paper:#f4f8f7;--card:#fff;--line:#dce9e6;--teal:#087e78;--teal-soft:#e0f4ef;--orange:#df7548;--orange-soft:#fff0e8;--blue:#366ba4;--blue-soft:#eaf2fb;--shadow:0 18px 45px #173d3b12}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 90% 0%,#dff5ed 0,transparent 32%),var(--paper);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.65}button{font:inherit}a{color:var(--teal);text-underline-offset:3px}button:focus-visible,a:focus-visible{outline:3px solid #ffad6e;outline-offset:3px}.wrap{max-width:1180px;margin:auto;padding:0 24px}header{padding:52px 0 24px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:99px;background:var(--teal-soft);color:#075d59;font-size:13px;font-weight:800;letter-spacing:.06em}h1{font-size:clamp(36px,4.2vw,54px);letter-spacing:-.055em;line-height:1.2;margin:18px 0 12px}h1 span{color:var(--teal)}.lead{color:#4b6971;font-size:clamp(16px,2vw,21px);max-width:760px;margin:0}.nav{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}.nav a{border:1px solid #c9e2db;background:#ffffffb8;text-decoration:none;color:#35545b;border-radius:99px;padding:7px 13px;font-weight:700;font-size:14px}.nav a:hover{background:var(--teal-soft)}
-    section{margin:36px 0}h2{font-size:clamp(25px,3vw,36px);line-height:1.25;letter-spacing:-.03em;margin:0 0 8px}.section-note{color:var(--muted);margin:0 0 20px}.panel{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}.hero-panel{padding:28px;overflow:hidden}.analogy{display:flex;align-items:flex-start;gap:16px;background:#eff8f5;padding:18px 22px;border-radius:18px;margin-bottom:24px}.analogy .big{font-size:28px;line-height:1}.analogy strong{display:block;font-size:19px}.analogy p{margin:4px 0 0;color:#49646b}
-    .flow{display:grid;grid-template-columns:1fr 44px 1fr 44px 1fr 44px 1.4fr;align-items:center;gap:5px}.node{border:2px solid var(--line);background:#fff;border-radius:19px;padding:18px 11px;min-height:130px;text-align:center;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s;display:flex;flex-direction:column;justify-content:center}.node:hover,.node.active{transform:translateY(-3px);border-color:var(--teal);box-shadow:0 12px 26px #087e7820}.node .symbol{font-size:32px;line-height:1.15}.node strong{font-size:18px;margin-top:4px}.node small{color:var(--muted);font-size:12px}.arrow{text-align:center;color:var(--teal);font-size:28px;font-weight:800}.branch{display:grid;grid-template-columns:1fr;gap:8px}.branch .node{min-height:82px;padding:10px 8px}.ac-strip{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 16px;border:1px dashed #c9d9ef;border-radius:15px;background:#f4f8fd}.ac-strip button{border:1px solid #b9cfe8;border-radius:10px;background:#fff;color:#275b91;font-weight:800;padding:7px 13px;cursor:pointer;white-space:nowrap}.ac-strip button.active{background:#e5f0fd}.ac-strip p{margin:0;color:#526c73;font-size:14px}.detail{margin-top:20px;border:1px solid #bfe5da;border-radius:17px;background:#f4fbf8;padding:16px 20px;min-height:98px}.detail strong{font-size:19px}.detail p{margin:3px 0 0;color:#49646b}.tip{font-size:14px;color:#657b7e;margin:18px 0 0}.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tag{font-size:13px;font-weight:800;padding:5px 10px;border-radius:99px}.tag.out{background:var(--orange-soft);color:#a8522e}.tag.in{background:var(--teal-soft);color:#086660}
-    .port-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.port{padding:26px;position:relative;overflow:hidden}.port:before{content:"";position:absolute;width:130px;height:130px;border-radius:50%;right:-35px;top:-55px;opacity:.5}.port.wan:before{background:#ffe1cb}.port.lan:before{background:#c7f0e5}.port .initial{font-weight:900;font-size:13px;letter-spacing:.12em}.port h3{font-size:30px;margin:7px 0}.port p{margin:0;color:#536d75}.port .port-example{margin-top:17px;padding:12px 14px;border-radius:12px;font-weight:800}.wan .port-example{background:var(--orange-soft);color:#a8522e}.lan .port-example{background:var(--teal-soft);color:#086660}.memory{margin-top:14px;padding:15px 20px;border:1px dashed #94cfc1;border-radius:15px;background:#f0faf5;font-weight:800;color:#0b6960}
-    .device-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.device{padding:20px;min-height:230px}.device .icon{font-size:31px}.device h3{font-size:20px;margin:8px 0 7px}.device p{color:#526c73;margin:0;font-size:15px}.device b{display:block;color:var(--teal);font-size:14px;margin-top:13px}.device:nth-child(2){border-top:5px solid var(--orange)}.device:nth-child(3){border-top:5px solid var(--blue)}.device:nth-child(4){border-top:5px solid var(--teal)}.device:nth-child(1){border-top:5px solid #9a72b0}.device:nth-child(5){border-top:5px solid #648dbd}.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.compare-card{padding:22px}.compare-card h3{font-size:21px;margin:0 0 8px}.compare-card p{color:#526c73;margin:0}.compare-card:nth-child(1){border-top:5px solid var(--teal)}.compare-card:nth-child(2){border-top:5px solid var(--blue)}.compare-card:nth-child(3){border-top:5px solid var(--orange)}.compare-note{margin-top:15px;padding:16px 20px;border-radius:15px;background:#eff8f5;color:#275a57;font-weight:700}
-    .scenario{padding:26px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.tabs button{border:1px solid var(--line);background:#f6faf8;color:#456169;border-radius:99px;padding:9px 16px;cursor:pointer;font-weight:800}.tabs button[aria-selected=true]{background:var(--teal);color:#fff;border-color:var(--teal)}.scenario-view{display:none}.scenario-view.active{display:block}.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}.chip{background:#f1f8f6;border:1px solid #d5e9e3;padding:9px 13px;border-radius:12px;font-weight:800}.chain .chev{color:var(--teal);font-weight:900}.scenario-view p{color:#526c73;margin:13px 0 0}.caution{background:#fff7e8;border-left:4px solid #e3a944;padding:12px 15px;border-radius:0 10px 10px 0}
-    .quiz{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.qcard{padding:22px}.qcard h3{font-size:17px;line-height:1.45;margin:0 0 14px}.answers{display:grid;gap:8px}.answers button{text-align:left;cursor:pointer;border:1px solid var(--line);background:#f8fbfa;border-radius:10px;padding:9px 11px;color:var(--ink)}.answers button:hover{border-color:var(--teal)}.answers button.correct{background:#e4f7eb;border-color:#42a46c}.answers button.wrong{background:#fff0ed;border-color:#e79b8e}.feedback{min-height:26px;margin:12px 0 0;font-size:14px;font-weight:700}.summary{padding:25px 28px;background:#123b3a;color:#ecf8f4}.summary h2{margin-bottom:10px}.summary p{margin:8px 0;color:#cce8e2}.summary strong{color:#fff}.summary a{color:#a7eee3}.footer{font-size:13px;color:#74878a;padding:10px 0 38px}
-    .planning-card p{color:#526c73;margin:0}
-    @media(max-width:900px){.flow{grid-template-columns:1fr 28px 1fr 28px 1fr}.flow>.arrow:nth-of-type(3),.branch{grid-column:1/-1}.flow>.arrow:nth-of-type(3){transform:rotate(90deg)}.branch{grid-template-columns:repeat(3,1fr)}.device-grid{grid-template-columns:repeat(2,1fr)}.compare-grid{grid-template-columns:1fr}.quiz{grid-template-columns:1fr}}@media(max-width:600px){header{padding-top:31px}.wrap{padding:0 16px}.hero-panel,.scenario{padding:18px}.analogy{padding:14px}.flow{grid-template-columns:1fr;gap:5px}.flow>.arrow{transform:rotate(90deg)}.flow>.arrow:nth-of-type(3){transform:rotate(90deg)}.node{min-height:96px}.branch{grid-column:auto;grid-template-columns:1fr}.port-grid,.device-grid{grid-template-columns:1fr}.device{min-height:0}.ac-strip{align-items:flex-start;flex-direction:column}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.node{transition:none}}
+    /* ==========================================================================
+       家庭网络讲解页
+
+       设计令牌（单一主题，data-theme 在浅色与深色之间切换）
+
+       颜色锁定：除语义色外不引入其它彩色。
+         青  = 朝内 / 家里 / LAN / 本地
+         橙  = 朝外 / 上游 / WAN / 外来
+       反馈色（正确 / 错误）只出现在答题结果上，不参与版面配色。
+
+       圆角锁定：只有三级，且各自绑定用途。
+         --r-pill    可点击元素与标签（导航、页签、按钮、tag）
+         --r-surface 容器面板（panel、示意图节点）
+         --r-inner   面板内部的次级块（示例框、答案按钮、流程 chip）
+
+       字体：中文用系统字体栈，无法自托管体积可控的中文显示字体，
+       因此层级靠字号、字重与等宽标签的对比来建立，而不是靠替换字体。
+       中文标题不做负字距（负字距会让汉字互相挤压），等宽拉丁标签才做正字距。
+       ========================================================================== */
+    :root{
+      color-scheme:light;
+      --paper:#f4f8f7;
+      --sunken:#e8f2ef;
+      --card:#ffffff;
+      --ink:#15313a;
+      --body:#3d5a62;
+      --muted:#556d75;
+      --line:#dbe8e5;
+      --line-soft:#eaf2f0;
+      --line-strong:#c4dad5;
+      /* 表单控件与纯图标按钮的边界：与白色 / 深色卡面都保持 3:1 以上，
+         满足 WCAG 1.4.11 对“识别控件所需的视觉信息”的要求。 */
+      --control-line:#6f8f8b;
+      /* 可点击小块的填充色：与卡面有可见差别，浅色与深色各一档 */
+      --fill:#f2f8f6;
+      /* 面板内部的凹陷块（比喻、口诀）：浅色里比卡面深，深色里比卡面深一档再配描边，
+         保证两种主题下都能看出这是“嵌在面板里的一块” */
+      --inset:#e9f3f0;
+
+      --teal:#087e78;
+      --teal-ink:#075d59;
+      --teal-soft:#dff3ee;
+      --warm:#d1693a;
+      --warm-ink:#9c4a24;
+      --warm-soft:#fdeee5;
+
+      --ok:#1c6f43;
+      --ok-soft:#e3f6ea;
+      --no:#a83a27;
+      --no-soft:#fdeae6;
+
+      --hl-bg:#0f3733;
+      --hl-ink:#eafaf6;
+      --hl-muted:#bcdcd6;
+      --hl-accent:#8fe3d6;
+
+      --focus:#0f3d45;
+      --shadow-sm:0 2px 6px rgba(21,49,58,.05);
+      --shadow:0 14px 34px rgba(21,49,58,.07);
+
+      --sans:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",system-ui,-apple-system,"Segoe UI",sans-serif;
+      --mono:ui-monospace,"Cascadia Mono","SF Mono",SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+
+      --r-pill:999px;
+      --r-surface:18px;
+      --r-inner:10px;
+      --r-control:6px;  /* 表单微控件（勾选框）单独一档，再小就会变成圆形 */
+
+      --fs-h1:clamp(30px,4vw,44px);
+      --fs-h2:clamp(22px,2.5vw,29px);
+      --fs-h3:18px;
+      --fs-body:16px;
+      --fs-sm:14.5px;
+      --fs-xs:13px;
+    }
+    html[data-theme="dark"]{
+      color-scheme:dark;
+      --paper:#0c1a1e;
+      --sunken:#112228;
+      --card:#122328;
+      --ink:#e8f2f0;
+      --body:#b9cfcc;
+      --muted:#93aeaa;
+      --line:#1f3a40;
+      --line-soft:#193136;
+      --line-strong:#2c4d54;
+      --fill:#173036;
+      --inset:#0b191c;
+
+      --teal:#4fc9bd;
+      --teal-ink:#7ee0d4;
+      --teal-soft:#123833;
+      --warm:#e08a5c;
+      --warm-ink:#f0ab84;
+      --warm-soft:#3a2418;
+
+      --ok:#6fd39b;
+      --ok-soft:#14352a;
+      --no:#f0917c;
+      --no-soft:#3a201a;
+
+      --hl-bg:#16403d;
+      --hl-ink:#eafaf6;
+      --hl-muted:#aecfc9;
+      --hl-accent:#8fe3d6;
+
+      --focus:#8fe6da;
+      --shadow-sm:0 2px 6px rgba(0,0,0,.35);
+      --shadow:0 14px 34px rgba(0,0,0,.45);
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--body);
+      font-family:var(--sans);
+      font-size:var(--fs-body);
+      line-height:1.78;
+      /* 中文排版：不让开括号、顿号之类跑到行首 */
+      line-break:strict;
+      -webkit-text-size-adjust:100%;
+    }
+    /* 页面顶部的柔和光晕：只作为背景氛围，不承担信息 */
+    body::before{
+      content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+      background:radial-gradient(60% 40% at 88% -6%,var(--teal-soft) 0,transparent 70%);
+      opacity:.75;
+    }
+    html[data-theme="dark"] body::before{opacity:.5}
+
+    h1,h2,h3{color:var(--ink);margin:0;font-weight:800}
+    p{margin:0}
+    strong{color:var(--ink);font-weight:700}
+    a{color:var(--teal-ink);text-underline-offset:3px;text-decoration-thickness:1px}
+    button{font:inherit;color:inherit}
+    svg{display:block}
+    ::selection{background:var(--teal-soft);color:var(--ink)}
+
+    /* 焦点环用墨色，在浅色纸面和深色纸面上都能达到 3:1 以上；
+       深色强调面板里改用浅青，否则焦点环会消失在背景里。 */
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+
+    /* ---------- 图标：Tabler Icons v3.31.0（MIT），以 symbol 形式内联 ---------- */
+    .ic{
+      width:1.25em;height:1.25em;flex:none;
+      fill:none;stroke:currentColor;stroke-width:1.75;
+      stroke-linecap:round;stroke-linejoin:round;
+    }
+    .ic--sm{width:1em;height:1em}
+
+    /* ---------- 布局原语 ---------- */
+    .wrap{max-width:1160px;margin-inline:auto;padding-inline:24px;position:relative;z-index:1}
+    main{position:relative;z-index:1}
+    .sect{padding-block:56px;scroll-margin-top:76px}
+    /* 相邻章节共用一段间距：上一节的下内边距就是两节之间的距离 */
+    .sect + .sect{padding-top:0}
+    /* 带底色的章节要有完整的上下内边距，所以用叠加类提高优先级 */
+    .sect.band{background:var(--sunken);border-block:1px solid var(--line);padding-block:56px}
+
+    .sect__head{display:grid;grid-template-columns:56px 1fr;gap:18px;align-items:start;margin-bottom:26px}
+    .sect__no{
+      font-family:var(--mono);font-size:var(--fs-xs);font-weight:600;
+      letter-spacing:.1em;color:var(--muted);
+      font-variant-numeric:tabular-nums;
+      padding-top:.7em;
+    }
+    .sect__head h2{font-size:var(--fs-h2);line-height:1.34;letter-spacing:0}
+    .sect__note{color:var(--muted);font-size:var(--fs-sm);margin-top:8px;max-width:62ch}
+
+    .panel{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:var(--r-surface);box-shadow:var(--shadow-sm);
+    }
+    .stack{display:grid;gap:16px}
+
+    /* ---------- 引言 ---------- */
+    header{padding-block:56px 8px}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:5px 13px;border-radius:var(--r-pill);
+      background:var(--teal-soft);color:var(--teal-ink);
+      font-size:var(--fs-xs);font-weight:700;
+    }
+    h1{font-size:var(--fs-h1);line-height:1.26;letter-spacing:0;margin-block:18px 14px;max-width:20ch}
+    h1 .h1__deck{
+      display:block;margin-top:.5em;
+      font-size:.56em;font-weight:700;line-height:1.5;
+      color:var(--teal-ink);
+    }
+    .lead{font-size:clamp(15.5px,1.5vw,18px);max-width:64ch;margin:0}
+
+    /* ---------- 吸顶章节导航 ---------- */
+    .subnav{
+      position:sticky;top:0;z-index:30;
+      background:color-mix(in srgb,var(--paper) 88%,transparent);
+      backdrop-filter:blur(12px) saturate(140%);
+      -webkit-backdrop-filter:blur(12px) saturate(140%);
+      border-bottom:1px solid var(--line);
+      margin-top:28px;
+    }
+    .subnav__inner{display:flex;align-items:center;gap:14px;height:56px}
+    .subnav__list{
+      display:flex;align-items:center;gap:4px;
+      flex:1 1 auto;min-width:0;
+      overflow-x:auto;scrollbar-width:none;
+    }
+    .subnav__list::-webkit-scrollbar{display:none}
+    .subnav__list a{
+      display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
+      padding:7px 12px;border-radius:var(--r-pill);
+      text-decoration:none;color:var(--body);
+      font-size:var(--fs-sm);font-weight:700;
+      transition:background .18s,color .18s;
+    }
+    .subnav__list a .n{
+      font-family:var(--mono);font-size:11px;font-weight:600;
+      letter-spacing:.08em;color:var(--muted);font-variant-numeric:tabular-nums;
+    }
+    .subnav__list a:hover{background:var(--teal-soft);color:var(--teal-ink)}
+    .subnav__list a[aria-current="location"]{background:var(--teal-soft);color:var(--teal-ink)}
+    .subnav__list a[aria-current="location"] .n{color:var(--teal-ink)}
+    .theme-toggle{
+      flex:none;display:grid;place-items:center;
+      width:38px;height:38px;cursor:pointer;
+      border:1px solid var(--control-line);border-radius:var(--r-pill);
+      background:var(--card);color:var(--body);
+      transition:border-color .18s,color .18s,transform .18s;
+    }
+    .theme-toggle:hover{border-color:var(--teal);color:var(--teal-ink)}
+    .theme-toggle:active{transform:scale(.95)}
+    .theme-toggle .ic{width:18px;height:18px}
+    .theme-toggle .only-dark{display:none}
+    html[data-theme="dark"] .theme-toggle .only-dark{display:block}
+    html[data-theme="dark"] .theme-toggle .only-light{display:none}
+
+    /* 阅读进度：纯 CSS 滚动驱动动画，不支持时整条隐藏，不写滚动监听 */
+    .progress{display:none}
+    @supports (animation-timeline: scroll()) {
+      .progress{display:block;position:fixed;inset:0 0 auto;height:2px;z-index:40;pointer-events:none}
+      .progress i{
+        display:block;height:100%;background:var(--teal);
+        transform:scaleX(0);transform-origin:0 50%;
+        animation:progress-grow linear both;
+        animation-timeline:scroll(root);
+      }
+      @keyframes progress-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+    }
+
+    /* ---------- §01 示意图 ---------- */
+    .hero-panel{padding:26px}
+    .analogy{
+      display:flex;gap:16px;align-items:flex-start;
+      background:var(--inset);border:1px solid var(--line);
+      border-radius:var(--r-inner);
+      padding:18px 20px;margin-bottom:26px;
+    }
+    .analogy .ic{width:26px;height:26px;color:var(--teal);margin-top:2px}
+    .analogy strong{display:block;font-size:17px}
+    .analogy p{margin-top:4px;font-size:var(--fs-sm);max-width:68ch}
+
+    .flow{
+      display:grid;
+      grid-template-columns:minmax(84px,1fr) 46px minmax(84px,1fr) 46px minmax(84px,1fr) 46px minmax(180px,1.5fr);
+      align-items:center;
+    }
+    .node{
+      position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:6px;min-height:118px;padding:16px 10px;
+      border:2px solid var(--line-strong);border-radius:var(--r-surface);
+      background:var(--card);color:var(--body);
+      text-align:center;cursor:pointer;
+      transition:transform .18s,border-color .18s,box-shadow .18s,background .18s;
+    }
+    .node .ic{width:28px;height:28px;color:var(--muted);transition:color .18s}
+    .node strong{font-size:17px;line-height:1.3}
+    .node small{color:var(--muted);font-size:12.5px;line-height:1.5}
+    .node:hover{border-color:var(--teal);background:var(--teal-soft)}
+    .node:hover .ic{color:var(--teal-ink)}
+    .node:active{transform:translateY(1px) scale(.99)}
+    .node[aria-pressed="true"]{
+      border-color:var(--teal);background:var(--teal-soft);
+      box-shadow:0 10px 24px rgba(8,126,120,.14);
+    }
+    .node[aria-pressed="true"] .ic{color:var(--teal-ink)}
+    html[data-theme="dark"] .node[aria-pressed="true"]{box-shadow:0 10px 24px rgba(0,0,0,.4)}
+
+    /* 连接线：一条细线 + 居中的方向箭头 */
+    .link{display:grid;place-items:center;position:relative;align-self:stretch;color:var(--teal)}
+    .link::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line-strong)}
+    .link .ic{
+      position:relative;width:15px;height:15px;
+      box-sizing:content-box;padding:0 4px;
+      background:var(--card);stroke-width:2;
+    }
+
+    /* 分支：竖线母干 + 每个节点一根短横枝 */
+    .branch{position:relative;display:grid;gap:10px;padding-left:24px}
+    .branch::before{content:"";position:absolute;left:0;top:14%;bottom:14%;width:1px;background:var(--line-strong)}
+    .branch .node{min-height:70px;padding:11px 10px;flex-direction:row;justify-content:flex-start;gap:11px;text-align:left}
+    .branch .node .ic{width:20px;height:20px}
+    .branch .node strong{font-size:15.5px}
+    .branch .node::before{content:"";position:absolute;left:-24px;top:50%;width:24px;height:1px;background:var(--line-strong)}
+
+    /* AC 与 Mesh 备注：不是数据必经路径，用弱化的旁注块表示 */
+    .asides{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:26px;border-top:1px solid var(--line)}
+    .aside{display:flex;gap:13px;padding:18px 22px 4px 0}
+    .aside + .aside{padding-left:22px;border-left:1px solid var(--line)}
+    .aside .ic{width:20px;height:20px;color:var(--teal);margin-top:3px}
+    .aside h3{font-size:15.5px;line-height:1.45}
+    .aside p{margin-top:5px;font-size:var(--fs-sm);color:var(--muted)}
+
+    .detail{
+      margin-top:22px;padding:17px 20px;min-height:120px;
+      border:1px solid var(--teal);border-radius:var(--r-inner);
+      background:var(--teal-soft);
+    }
+    .detail strong{display:block;font-size:18px}
+    .detail p{margin-top:5px;font-size:var(--fs-sm);color:var(--body);max-width:72ch}
+
+    .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+    .tag{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:6px 12px;border-radius:var(--r-pill);
+      font-size:var(--fs-xs);font-weight:700;
+    }
+    .tag .ic{width:14px;height:14px}
+    .tag--out{background:var(--warm-soft);color:var(--warm-ink)}
+    .tag--in{background:var(--teal-soft);color:var(--teal-ink)}
+    .tip{font-size:var(--fs-sm);color:var(--muted);margin-top:20px;padding-top:18px;border-top:1px solid var(--line-soft)}
+
+    /* ---------- §02 WAN / LAN ---------- */
+    .portgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .portcard{padding:24px;display:flex;flex-direction:column;gap:10px}
+    .portcard__top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .portcard__dir{display:grid;place-items:center;width:34px;height:34px;border-radius:var(--r-pill)}
+    .portcard__dir .ic{width:18px;height:18px;stroke-width:2}
+    .portcard--out .portcard__dir{background:var(--warm-soft);color:var(--warm-ink)}
+    .portcard--in .portcard__dir{background:var(--teal-soft);color:var(--teal-ink)}
+    .mono-label{
+      font-family:var(--mono);font-size:11px;font-weight:600;
+      letter-spacing:.14em;color:var(--muted);
+    }
+    .portcard h3{font-size:clamp(22px,2.4vw,27px);line-height:1.25}
+    .portcard p{font-size:var(--fs-sm);max-width:52ch}
+    .example{
+      margin-top:auto;padding:11px 14px;border-radius:var(--r-inner);
+      font-size:var(--fs-sm);font-weight:700;
+    }
+    .portcard--out .example{background:var(--warm-soft);color:var(--warm-ink)}
+    .portcard--in .example{background:var(--teal-soft);color:var(--teal-ink)}
+    .memory{
+      display:flex;gap:13px;align-items:flex-start;
+      margin-top:16px;padding:17px 20px;
+      border:1px dashed var(--line-strong);border-radius:var(--r-inner);
+      background:var(--inset);font-size:var(--fs-sm);
+    }
+    .memory .ic{width:20px;height:20px;color:var(--teal);margin-top:3px}
+
+    /* ---------- §03 五种角色：分栏长条，不用五张卡片 ---------- */
+    .rail{
+      display:grid;grid-template-columns:repeat(5,1fr);
+      border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    }
+    .rail__item{padding:26px 20px 26px 0;display:flex;flex-direction:column;gap:9px}
+    .rail__item + .rail__item{padding-left:20px;border-left:1px solid var(--line)}
+    .rail__item .ic{width:26px;height:26px;color:var(--teal)}
+    .rail__item h3{font-size:17px;line-height:1.4}
+    .rail__item p{font-size:var(--fs-sm);flex:1 1 auto}
+    .rail__item b{
+      display:block;font-size:var(--fs-xs);font-weight:700;color:var(--teal-ink);
+      letter-spacing:.02em;
+    }
+
+    /* ---------- §04 三方对照 ---------- */
+    .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line-strong)}
+    .tri__col{padding:24px 22px 4px 0;display:flex;flex-direction:column;gap:8px}
+    .tri__col + .tri__col{padding-left:22px;border-left:1px solid var(--line)}
+    .tri__col .ic{width:24px;height:24px;color:var(--teal)}
+    .tri__col h3{font-size:17.5px;line-height:1.4}
+    .tri__col p{font-size:var(--fs-sm)}
+    .conclusion{
+      display:flex;gap:13px;align-items:flex-start;
+      margin-top:24px;padding:17px 20px;
+      border-radius:var(--r-inner);background:var(--card);
+      border:1px solid var(--line);border-left:3px solid var(--teal);
+      font-size:var(--fs-sm);
+    }
+    .conclusion .ic{width:20px;height:20px;color:var(--teal);margin-top:3px}
+
+    /* ---------- 流程 chip ---------- */
+    .chain{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:14px 0 0}
+    .chain > span:not(.chev){
+      padding:9px 14px;border-radius:var(--r-inner);
+      background:var(--card);border:1px solid var(--line-strong);
+      font-size:var(--fs-sm);font-weight:700;color:var(--ink);
+    }
+    .chev{display:grid;place-items:center;color:var(--teal)}
+    .chev .ic{width:15px;height:15px;stroke-width:2}
+
+    .notecard{padding:22px 24px}
+    .notecard h3{font-size:var(--fs-h3);line-height:1.45}
+    .notecard p{margin-top:8px;font-size:var(--fs-sm)}
+
+    /* ---------- §05 页签 ---------- */
+    .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+    .tabs button{
+      display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+      padding:9px 16px;border-radius:var(--r-pill);
+      border:1px solid var(--control-line);background:var(--card);color:var(--body);
+      font-size:var(--fs-sm);font-weight:700;
+      transition:background .18s,border-color .18s,color .18s,transform .18s;
+    }
+    .tabs button:hover{border-color:var(--teal);color:var(--teal-ink)}
+    .tabs button:active{transform:scale(.98)}
+    .tabs button[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+    html[data-theme="dark"] .tabs button[aria-selected="true"]{color:#062320}
+    .view{display:none}
+    .view.is-active{display:block}
+    .view > p{margin-top:16px;font-size:var(--fs-sm);max-width:74ch}
+    .caution{
+      display:flex;gap:13px;align-items:flex-start;
+      margin-top:16px;padding:16px 18px;
+      border-radius:var(--r-inner);background:var(--warm-soft);
+      border-left:3px solid var(--warm);font-size:var(--fs-sm);
+    }
+    .caution .ic{width:20px;height:20px;color:var(--warm-ink);margin-top:3px}
+    .caution p{color:var(--warm-ink)}
+
+    /* ---------- §06 四个判断：编号列表 ---------- */
+    .judge{display:grid;gap:0;border-top:1px solid var(--line)}
+    .judge__item{display:grid;grid-template-columns:52px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid var(--line)}
+    .judge__no{
+      font-family:var(--mono);font-size:15px;font-weight:600;color:var(--teal);
+      font-variant-numeric:tabular-nums;letter-spacing:.06em;padding-top:3px;
+    }
+    .judge__item h3{font-size:var(--fs-h3);line-height:1.45}
+    .judge__item p{margin-top:7px;font-size:var(--fs-sm);max-width:74ch}
+    .decision{display:grid;gap:0;margin-top:8px}
+    .decision__row{
+      display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+      padding:15px 0;border-bottom:1px solid var(--line-soft);
+      font-size:var(--fs-sm);
+    }
+    .decision__row:last-child{border-bottom:0;padding-bottom:0}
+    .decision__row b{color:var(--ink);font-weight:700}
+    .contexts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+    .context{padding:22px;display:flex;flex-direction:column;gap:9px}
+    .context .ic{width:22px;height:22px;color:var(--teal)}
+    .context h3{font-size:17px;line-height:1.4}
+    .context p{font-size:var(--fs-sm)}
+
+    .checklist{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+    .checklist li{border-bottom:1px solid var(--line-soft)}
+    .checklist li:last-child{border-bottom:0}
+    .checklist label{
+      display:flex;gap:13px;align-items:flex-start;
+      padding:13px 4px;cursor:pointer;font-size:var(--fs-sm);
+      transition:background .18s;
+    }
+    .checklist label:hover{background:var(--teal-soft)}
+    .checklist input{
+      appearance:none;-webkit-appearance:none;
+      flex:none;width:19px;height:19px;margin:4px 0 0;cursor:pointer;
+      border:1.5px solid var(--control-line);border-radius:var(--r-control);
+      background:var(--card);transition:background .18s,border-color .18s;
+    }
+    /* 勾选状态的勾形复用 Tabler Icons 的 check 路径，避免手绘图标 */
+    .checklist input:checked{
+      background:var(--teal);border-color:var(--teal);
+      background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5l10 -10'/%3E%3C/svg%3E");
+      background-size:13px;background-position:center;background-repeat:no-repeat;
+    }
+    .checklist input:checked + span{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px}
+
+    /* ---------- §07 术语表：双栏词条 ---------- */
+    /* 六条词条放在同一个网格里按行排列，左右两栏的行高才会一致，
+       分隔线也才能在同一个高度对齐。 */
+    .glossary{display:grid;grid-template-columns:1fr 1fr;column-gap:56px;position:relative}
+    .glossary::before{
+      content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;
+      background:var(--line);transform:translateX(-50%);
+    }
+    .term{padding:20px 0;border-bottom:1px solid var(--line-soft);display:grid;gap:6px;align-content:start}
+    .term:nth-child(-n+2){padding-top:0}
+    .term:nth-last-child(-n+2){border-bottom:0;padding-bottom:0}
+    .term h3{font-size:17px;line-height:1.4}
+    .term p{font-size:var(--fs-sm)}
+
+    /* ---------- §08 测验 ---------- */
+    .twoup{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .quizgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .qcard{padding:22px 24px;display:flex;flex-direction:column}
+    .qcard h3{font-size:17px;line-height:1.5;margin-bottom:16px}
+    .answers{display:grid;gap:8px}
+    .answers button{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      text-align:left;cursor:pointer;
+      padding:11px 14px;border-radius:var(--r-inner);
+      border:1px solid var(--control-line);background:var(--fill);color:var(--ink);
+      font-size:var(--fs-sm);font-weight:700;
+      transition:border-color .18s,background .18s,transform .18s;
+    }
+    .answers button:hover{border-color:var(--teal);background:var(--teal-soft)}
+    .answers button:active{transform:translateY(1px) scale(.995)}
+    .answers button .mark{display:none;width:17px;height:17px;stroke-width:2.25}
+    .answers button.correct{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+    .answers button.correct .mark-ok{display:block}
+    .answers button.wrong{background:var(--no-soft);border-color:var(--no);color:var(--no)}
+    .answers button.wrong .mark-no{display:block}
+    /* 解释推到卡片底部，问题和选项保持贴在一起 */
+    .feedback{margin-top:auto;padding-top:14px;font-size:var(--fs-sm);font-weight:700;color:var(--ink);min-height:1.6em}
+    .quiz__score{
+      display:flex;align-items:center;gap:10px;
+      margin-top:18px;font-size:var(--fs-sm);font-weight:700;color:var(--muted);
+    }
+    .quiz__score .n{font-family:var(--mono);font-size:16px;color:var(--teal-ink);font-variant-numeric:tabular-nums}
+
+    /* ---------- 结尾 ---------- */
+    .summary{
+      background:var(--hl-bg);color:var(--hl-muted);
+      border-radius:var(--r-surface);padding:30px 32px;margin-block:24px 0;
+    }
+    .summary h2{font-size:var(--fs-h2);line-height:1.35;color:var(--hl-ink)}
+    .summary p{margin-top:12px;font-size:var(--fs-sm);max-width:70ch}
+    .summary strong{color:var(--hl-ink)}
+    .summary a{color:var(--hl-accent)}
+    .footer{padding:26px 0 56px;font-size:var(--fs-xs);color:var(--muted);line-height:1.9}
+    .footer a{color:var(--teal-ink)}
+
+    /* ---------- 动效：全部可在 prefers-reduced-motion 下关闭 ---------- */
+    @media (prefers-reduced-motion: no-preference){
+      /* 进入视口时把数据路径按顺序点亮一次，用来演示“往哪个方向走” */
+      .flow.is-flow > .node,
+      .flow.is-flow > .link .ic,
+      .flow.is-flow .branch .node{animation-duration:.7s;animation-timing-function:cubic-bezier(.16,1,.3,1);animation-delay:var(--d,0s);animation-iteration-count:1}
+      .flow.is-flow > .node,
+      .flow.is-flow .branch .node{animation-name:node-lit}
+      .flow.is-flow > .link .ic{animation-name:step}
+      @keyframes node-lit{
+        0%{border-color:var(--line)}
+        35%{border-color:var(--teal);box-shadow:0 0 0 5px var(--teal-soft)}
+        100%{border-color:var(--line);box-shadow:none}
+      }
+      @keyframes step{
+        0%{opacity:.2;transform:translateX(-4px)}
+        55%{opacity:1;transform:translateX(2px)}
+        100%{opacity:1;transform:none}
+      }
+      .flow > .node:nth-child(1){--d:0s}
+      .flow > .link:nth-child(2){--d:.08s}
+      .flow > .node:nth-child(3){--d:.18s}
+      .flow > .link:nth-child(4){--d:.26s}
+      .flow > .node:nth-child(5){--d:.36s}
+      .flow > .link:nth-child(6){--d:.44s}
+      .branch .node:nth-child(1){--d:.56s}
+      .branch .node:nth-child(2){--d:.68s}
+      .branch .node:nth-child(3){--d:.8s}
+    }
+
+    /* ---------- 响应式 ---------- */
+    @media (max-width:980px){
+      .flow{grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr) 34px minmax(0,1fr) 34px minmax(0,1.4fr)}
+      .node{padding:14px 8px;min-height:108px}
+      .node strong{font-size:15.5px}
+      .rail{grid-template-columns:repeat(2,1fr)}
+      .rail__item{padding:22px 20px 22px 0}
+      .rail__item:nth-child(odd){padding-left:0;border-left:0}
+      .rail__item:nth-child(even){padding-left:20px;border-left:1px solid var(--line)}
+      .rail__item:nth-child(n+3){border-top:1px solid var(--line)}
+      .tri{grid-template-columns:1fr;border-top:0}
+      .tri__col{padding:20px 0;border-top:1px solid var(--line)}
+      .tri__col + .tri__col{padding-left:0;border-left:0}
+      .contexts{grid-template-columns:1fr}
+      .contexts .context{padding:20px}
+      .glossary{grid-template-columns:1fr;column-gap:0}
+      .glossary::before{display:none}
+      .term:nth-child(n){padding:20px 0;border-bottom:1px solid var(--line-soft)}
+      .term:first-child{padding-top:0}
+      .term:last-child{border-bottom:0;padding-bottom:0}
+      .twoup,.quizgrid{grid-template-columns:1fr}
+      .asides{grid-template-columns:1fr}
+      .aside{padding:18px 0 4px}
+      .aside + .aside{padding-left:0;border-left:0;border-top:1px solid var(--line-soft)}
+    }
+
+    @media (max-width:760px){
+      .wrap{padding-inline:18px}
+      .subnav__inner{height:52px}
+      header{padding-block:38px 6px}
+      h1{max-width:none}
+      .sect{padding-block:44px;scroll-margin-top:66px}
+      .band{padding-block:44px}
+      .sect__head{grid-template-columns:1fr;gap:4px}
+      .sect__no{padding-top:0}
+      .hero-panel{padding:18px}
+      .analogy{padding:16px;gap:13px}
+      .portgrid{grid-template-columns:1fr}
+      .rail{grid-template-columns:1fr;border-top:1px solid var(--line)}
+      .rail__item:nth-child(odd),
+      .rail__item:nth-child(even){padding:20px 0;border-left:0;border-top:1px solid var(--line)}
+      .rail__item:first-child{border-top:0;padding-top:0}
+      /* 示意图转为纵向：箭头旋转 90°，分支由“竖干 + 横枝”改为一条向下的链 */
+      .flow{grid-template-columns:1fr;justify-items:stretch}
+      .link{width:100%;height:34px}
+      .link::before{left:50%;right:auto;top:0;bottom:0;width:1px;height:auto;transform:translateX(-50%)}
+      .link .ic{transform:rotate(90deg);padding:4px 0}
+      .branch{padding-left:0;padding-top:26px;gap:10px}
+      .branch::before{display:none}
+      .branch .node::before{left:50%;top:-10px;width:1px;height:10px}
+      .branch .node:first-child::before{top:-26px;height:26px}
+      .judge__item{grid-template-columns:38px 1fr;gap:12px;padding:20px 0}
+      .summary{padding:24px 22px}
+      .footer{padding-bottom:44px}
+    }
+
+    @media (max-width:520px){
+      .chain{gap:7px}
+      .chain > span:not(.chev){padding:8px 11px}
+      .qcard{padding:20px}
+    }
+
+    /* 不支持 backdrop-filter 时给导航一个实色背景，避免文字叠在内容上 */
+    @supports not (backdrop-filter: blur(2px)){
+      .subnav{background:var(--paper)}
+    }
+    @media (prefers-reduced-transparency: reduce){
+      .subnav{background:var(--paper);backdrop-filter:none;-webkit-backdrop-filter:none}
+    }
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      *{transition-duration:.01ms !important}
+    }
+
+    /* ---------- 打印：给需要照着接线的人留一份纸质版 ---------- */
+    @media print{
+      body::before,.progress,.subnav,.theme-toggle{display:none !important}
+      body{background:#fff;color:#000}
+      .panel,.band{box-shadow:none;break-inside:avoid}
+      .band{background:#fff}
+      .sect,.band{padding-block:20px}
+      .sect__head{margin-bottom:14px}
+      .summary{background:#fff;color:#000;border:1px solid #999}
+      .summary h2,.summary p,.summary strong,.summary a{color:#000}
+      .view{display:block !important}
+      .judge__item,.qcard,.term,.rail__item{break-inside:avoid}
+      a[href^="http"]::after{content:" (" attr(href) ")";font-size:11px;word-break:break-all}
+    }
   </style>
 </head>
 <body>
+  <div class="progress" aria-hidden="true"><i></i></div>
+
+  <!-- 图标精灵：Tabler Icons v3.31.0（MIT License），仅内联路径，不引入外部依赖 -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></symbol>
+      <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M6.657 18c-2.572 0 -4.657 -2.007 -4.657 -4.483c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486c0 1.927 -1.551 3.487 -3.465 3.487h-11.878"/></symbol>
+      <symbol id="i-exchange" viewBox="0 0 24 24"><path d="M5 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M19 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3"/><path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3"/></symbol>
+      <symbol id="i-router" viewBox="0 0 24 24"><path d="M3 13m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"/><path d="M17 17l0 .01"/><path d="M13 17l0 .01"/><path d="M15 13l0 -2"/><path d="M11.75 8.75a4 4 0 0 1 6.5 0"/><path d="M8.5 6.5a8 8 0 0 1 13 0"/></symbol>
+      <symbol id="i-split" viewBox="0 0 24 24"><path d="M21 17h-8l-3.5 -5h-6.5"/><path d="M21 7h-8l-3.495 5"/><path d="M18 10l3 -3l-3 -3"/><path d="M18 20l3 -3l-3 -3"/></symbol>
+      <symbol id="i-ap" viewBox="0 0 24 24"><path d="M12 12l0 .01"/><path d="M14.828 9.172a4 4 0 0 1 0 5.656"/><path d="M17.657 6.343a8 8 0 0 1 0 11.314"/><path d="M9.168 14.828a4 4 0 0 1 0 -5.656"/><path d="M6.337 17.657a8 8 0 0 1 0 -11.314"/></symbol>
+      <symbol id="i-ac" viewBox="0 0 24 24"><path d="M14 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M4 6l8 0"/><path d="M16 6l4 0"/><path d="M8 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M4 12l2 0"/><path d="M10 12l10 0"/><path d="M17 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M4 18l11 0"/><path d="M19 18l1 0"/></symbol>
+      <symbol id="i-mesh" viewBox="0 0 24 24"><path d="M8 18a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z"/><path d="M20 18a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z"/><path d="M20 6a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z"/><path d="M8 6a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z"/><path d="M6 8v8"/><path d="M18 16v-8"/><path d="M8 6h8"/><path d="M16 18h-8"/></symbol>
+      <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7"/><path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3"/><path d="M9.7 17l4.6 0"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"/><path d="M12 16h.01"/></symbol>
+      <symbol id="i-checklist" viewBox="0 0 24 24"><path d="M3.5 5.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 11.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 17.5l1.5 1.5l2.5 -2.5"/><path d="M11 6l9 0"/><path d="M11 12l9 0"/><path d="M11 18l9 0"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path d="M9 12l2 2l4 -4"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path d="M10 10l4 4m0 -4l-4 4"/></symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></symbol>
+      <symbol id="i-out" viewBox="0 0 24 24"><path d="M17 7l-10 10"/><path d="M8 7l9 0l0 9"/></symbol>
+      <symbol id="i-in" viewBox="0 0 24 24"><path d="M17 7l-10 10"/><path d="M16 17l-9 0l0 -9"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/></symbol>
+    </defs>
+  </svg>
+
   <div class="wrap">
     <header>
-      <div class="eyebrow">家庭网络 · 设备、术语与布网</div>
-      <h1>家里的网络怎么搭？<br><span>先认设备和术语，再看接线与布局。</span></h1>
+      <p class="eyebrow">家庭网络 · 设备、术语与布网</p>
+      <h1>家里的网络怎么搭？<span class="h1__deck">先认设备和术语，再看接线与布局。</span></h1>
       <p class="lead">从光猫、路由器到交换机、AP 和 Mesh：了解各自的用途、常见接法，并根据有线设备数量和房间 Wi-Fi 覆盖需求，规划适合自己家的网络。</p>
-      <nav class="nav" aria-label="页面导航"><a href="#map">看连接图</a><a href="#ports">认 LAN / WAN</a><a href="#devices">认设备</a><a href="#mesh">Mesh / AP 与漫游</a><a href="#wiring">拨号与接线</a><a href="#planning">做布网规划</a><a href="#glossary">认常见术语</a><a href="#quiz">测一测</a></nav>
     </header>
-    <main>
-      <section id="map">
-        <h2>01｜先看一张图</h2>
-        <p class="section-note">点一下图中的设备，会看到它在这条网络链路里的任务。</p>
+  </div>
+
+  <nav class="subnav" aria-label="章节导航">
+    <div class="wrap subnav__inner">
+      <div class="subnav__list" id="subnavList">
+        <a href="#map"><span class="n">01</span>连接图</a>
+        <a href="#ports"><span class="n">02</span>LAN 与 WAN</a>
+        <a href="#devices"><span class="n">03</span>五种设备</a>
+        <a href="#mesh"><span class="n">04</span>Mesh 与漫游</a>
+        <a href="#wiring"><span class="n">05</span>拨号与接线</a>
+        <a href="#planning"><span class="n">06</span>布网规划</a>
+        <a href="#glossary"><span class="n">07</span>常见术语</a>
+        <a href="#quiz"><span class="n">08</span>测一测</a>
+      </div>
+      <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="切换深色或浅色主题">
+        <svg class="ic only-light" aria-hidden="true"><use href="#i-moon"/></svg>
+        <svg class="ic only-dark" aria-hidden="true"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <section id="map" class="sect">
+      <div class="wrap">
+        <div class="sect__head">
+          <p class="sect__no" aria-hidden="true">01</p>
+          <div>
+            <h2>先看一张图</h2>
+            <p class="sect__note">点一下图中的设备，会看到它在这条网络链路里的任务。</p>
+          </div>
+        </div>
+
         <div class="panel hero-panel">
-          <div class="analogy"><span class="big" aria-hidden="true">🏠</span><div><strong>把家里的网络想成一栋楼</strong><p>光猫接入楼外的道路；路由器是门卫兼向导；门够用就不用交换机，不够才多开有线门；AP 用来扩大无线覆盖。</p></div></div>
-          <div class="flow" aria-label="互联网经光猫进入主路由器；主路由器可同时连接小米 Mesh 子节点、交换机和无线 AP">
-            <button class="node" data-detail="internet" aria-pressed="false"><span class="symbol" aria-hidden="true">☁️</span><strong>互联网</strong><small>家门外</small></button>
-            <span class="arrow" aria-hidden="true">→</span>
-            <button class="node" data-detail="ont" aria-pressed="false"><span class="symbol" aria-hidden="true">🔌</span><strong>光猫</strong><small>接入光纤</small></button>
-            <span class="arrow" aria-hidden="true">→</span>
-            <button class="node active" data-detail="router" aria-pressed="true"><span class="symbol" aria-hidden="true">🧭</span><strong>路由器</strong><small>WAN 进 · LAN 出</small></button>
-            <span class="arrow" aria-hidden="true">→</span>
-            <div class="branch">
-              <button class="node" data-detail="mesh" aria-pressed="false"><span class="symbol" aria-hidden="true">📡</span><strong>Mesh 子节点</strong><small>按需添加</small></button>
-              <button class="node" data-detail="switch" aria-pressed="false"><span class="symbol" aria-hidden="true">🧩</span><strong>交换机</strong><small>口不够才加</small></button>
-              <button class="node" data-detail="ap" aria-pressed="false"><span class="symbol" aria-hidden="true">📶</span><strong>AP</strong><small>覆盖不足才加</small></button>
+          <div class="analogy">
+            <svg class="ic" aria-hidden="true"><use href="#i-home"/></svg>
+            <div>
+              <strong>把家里的网络想成一栋楼</strong>
+              <p>光猫接入楼外的道路；路由器是门卫兼向导；门够用就不用交换机，不够才多开有线门；AP 用来扩大无线覆盖。</p>
             </div>
           </div>
-          <div class="ac-strip"><button type="button" data-detail="ac" aria-pressed="false">AC · 无线控制器</button><p>统一管理多个 AP；可能是独立设备，也可能集成在路由器中。它不在上网数据的必经路径上。</p></div>
-          <div class="ac-strip"><button type="button" data-detail="mesh" aria-pressed="false">小米 Mesh · 组网方式</button><p>子节点可用一根网线连接主路由；若还有可用网口，也能继续接电脑或交换机。</p></div>
-          <div class="detail" id="detail" role="status" aria-live="polite"><strong>路由器：决定数据往哪走</strong><p>通常用 WAN 口接上游，用 LAN 口接家里设备；一般还会给设备分配地址（DHCP），并让多台设备共用外网连接（NAT）。</p></div>
-          <div class="legend"><span class="tag out">WAN = 朝外 / 上游</span><span class="tag in">LAN = 朝内 / 家里</span></div>
+
+          <div class="flow" role="group" aria-label="互联网经光猫进入主路由器；主路由器可同时连接小米 Mesh 子节点、交换机和无线 AP">
+            <button class="node" type="button" data-detail="internet" aria-pressed="false">
+              <svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg>
+              <strong>互联网</strong><small>家门外</small>
+            </button>
+            <span class="link" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <button class="node" type="button" data-detail="ont" aria-pressed="false">
+              <svg class="ic" aria-hidden="true"><use href="#i-exchange"/></svg>
+              <strong>光猫</strong><small>接入光纤</small>
+            </button>
+            <span class="link" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <button class="node" type="button" data-detail="router" aria-pressed="true">
+              <svg class="ic" aria-hidden="true"><use href="#i-router"/></svg>
+              <strong>路由器</strong><small>WAN 进 · LAN 出</small>
+            </button>
+            <span class="link" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <div class="branch">
+              <button class="node" type="button" data-detail="mesh" aria-pressed="false">
+                <svg class="ic" aria-hidden="true"><use href="#i-mesh"/></svg>
+                <span><strong>Mesh 子节点</strong><br><small>按需添加</small></span>
+              </button>
+              <button class="node" type="button" data-detail="switch" aria-pressed="false">
+                <svg class="ic" aria-hidden="true"><use href="#i-split"/></svg>
+                <span><strong>交换机</strong><br><small>口不够才加</small></span>
+              </button>
+              <button class="node" type="button" data-detail="ap" aria-pressed="false">
+                <svg class="ic" aria-hidden="true"><use href="#i-ap"/></svg>
+                <span><strong>AP</strong><br><small>覆盖不足才加</small></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="asides">
+            <div class="aside">
+              <svg class="ic" aria-hidden="true"><use href="#i-ac"/></svg>
+              <div>
+                <h3>AC · 无线控制器</h3>
+                <p>统一管理多个 AP；可能是独立设备，也可能集成在路由器中。它不在上网数据的必经路径上。</p>
+              </div>
+            </div>
+            <div class="aside">
+              <svg class="ic" aria-hidden="true"><use href="#i-mesh"/></svg>
+              <div>
+                <h3>小米 Mesh · 组网方式</h3>
+                <p>子节点可用一根网线连接主路由；若还有可用网口，也能继续接电脑或交换机。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail" id="detail" role="status" aria-live="polite">
+            <strong>路由器：决定数据往哪走</strong>
+            <p>通常用 WAN 口接上游，用 LAN 口接家里设备；一般还会给设备分配地址&#8288;（DHCP），并让多台设备共用外网连接&#8288;（NAT）。</p>
+          </div>
+
+          <div class="legend">
+            <span class="tag tag--out"><svg class="ic" aria-hidden="true"><use href="#i-out"/></svg>WAN = 朝外 / 上游</span>
+            <span class="tag tag--in"><svg class="ic" aria-hidden="true"><use href="#i-in"/></svg>LAN = 朝内 / 家里</span>
+          </div>
+
           <p class="tip">上图以“光猫桥接、路由器负责上网”为例。主路由可同时连接 Mesh 子节点、交换机和无线 AP，它们是三条并列分支，均按需要添加。</p>
         </div>
-      </section>
-      <section id="ports">
-        <h2>02｜LAN 口和 WAN 口，到底怎么分？</h2>
-        <p class="section-note">字母不用死记，抓住“这个口朝哪边连”。</p>
-        <div class="port-grid">
-          <article class="panel port wan"><div class="initial">WIDE AREA NETWORK</div><h3>WAN 口</h3><p>广域网口。在家用路由器上，它通常连<strong>光猫或上一级网络</strong>，是这台路由器的“上游入口”。</p><div class="port-example">例：光猫网口 → 路由器 WAN 口</div></article>
-          <article class="panel port lan"><div class="initial">LOCAL AREA NETWORK</div><h3>LAN 口</h3><p>局域网口。通常连<strong>电脑、交换机、AP</strong> 等家中设备，属于这台路由器管理的本地网络。</p><div class="port-example">例：路由器 LAN 口 → 交换机</div></article>
+      </div>
+    </section>
+
+    <section id="ports" class="sect">
+      <div class="wrap">
+        <div class="sect__head">
+          <p class="sect__no" aria-hidden="true">02</p>
+          <div>
+            <h2>LAN 口和 WAN 口，到底怎么分？</h2>
+            <p class="sect__note">字母不用死记，抓住“这个口朝哪边连”。</p>
+          </div>
         </div>
-        <div class="memory">记忆口诀：<strong>WAN 往外，LAN 留家。</strong> 但它们是“相对于某台路由器”的角色，不是所有网线或接口永远固定的身份。</div>
-      </section>
-      <section id="devices">
-        <h2>03｜五种角色，各负责什么？</h2>
-        <p class="section-note">AC 是管理功能，可能独立成设备，也可能集成在路由器里。</p>
-        <div class="device-grid">
-          <article class="panel device"><div class="icon" aria-hidden="true">🔌</div><h3>光猫 / ONT</h3><p>接入运营商光纤；可桥接转发，也可能兼做路由与宽带拨号。</p><b>关键词：光纤入口</b></article>
-          <article class="panel device"><div class="icon" aria-hidden="true">🧭</div><h3>路由器</h3><p>连接不同网络，决定数据去向；家用场景通常兼做 DHCP 和 NAT。</p><b>关键词：网关 / 带路</b></article>
-          <article class="panel device"><div class="icon" aria-hidden="true">🧩</div><h3>交换机</h3><p>路由器自带的 LAN 口够用就不需要它；口不够时，它能把同一个局域网扩展给更多有线设备。</p><b>关键词：按需扩有线口</b></article>
-          <article class="panel device"><div class="icon" aria-hidden="true">📶</div><h3>无线 AP</h3><p>把有线局域网延伸为 Wi-Fi；供电方式可能是适配器、PoE 或两者兼容。</p><b>关键词：扩无线覆盖</b></article>
-          <article class="panel device"><div class="icon" aria-hidden="true">🎛️</div><h3>AC / 无线控制器</h3><p>统一管理多个 AP 的名称、密码和无线参数；不负责替代 AP 发出 Wi-Fi。</p><b>关键词：管多个 AP</b></article>
+
+        <div class="portgrid">
+          <article class="panel portcard portcard--out">
+            <div class="portcard__top">
+              <p class="mono-label">Wide Area Network</p>
+              <span class="portcard__dir" aria-hidden="true"><svg class="ic"><use href="#i-out"/></svg></span>
+            </div>
+            <h3>WAN 口</h3>
+            <p>广域网口。在家用路由器上，它通常连<strong>光猫或上一级网络</strong>，是这台路由器的“上游入口”。</p>
+            <p class="example">例：光猫网口 → 路由器 WAN 口</p>
+          </article>
+
+          <article class="panel portcard portcard--in">
+            <div class="portcard__top">
+              <p class="mono-label">Local Area Network</p>
+              <span class="portcard__dir" aria-hidden="true"><svg class="ic"><use href="#i-in"/></svg></span>
+            </div>
+            <h3>LAN 口</h3>
+            <p>局域网口。通常连<strong>电脑、交换机、AP</strong> 等家中设备，属于这台路由器管理的本地网络。</p>
+            <p class="example">例：路由器 LAN 口 → 交换机</p>
+          </article>
         </div>
-      </section>
-      <section id="mesh">
-        <h2>04｜Mesh、AP 与走动时的切换</h2>
-        <p class="section-note">Mesh 强调兼容节点的协同；AP 是提供 Wi-Fi 接入的设备角色。两种方案都可以改善多房间覆盖。</p>
-        <div class="compare-grid">
-          <article class="panel compare-card"><h3>小米 Mesh</h3><p>一台作主路由，其他作子节点，协同提供 Wi-Fi。子节点可用<strong>一根网线</strong>作回程；若有剩余网口，还能接有线设备。</p></article>
-          <article class="panel compare-card"><h3>AC + AP</h3><p>AP 提供 Wi-Fi 接入；AC 统一管理多个 AP。AC 可能独立成设备，也可能集成在路由器中。</p></article>
-          <article class="panel compare-card"><h3>交换机</h3><p>只负责连接和扩展<strong>有线网口</strong>，不发 Wi-Fi。可接在主路由与 Mesh 子节点之间，也可接在子节点剩余网口后面。</p></article>
+
+        <div class="memory">
+          <svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>
+          <p>记忆口诀：<strong>WAN 往外，LAN 留家。</strong> 但它们是“相对于某台路由器”的角色，不是所有网线或接口永远固定的身份。</p>
         </div>
-        <div class="panel scenario" style="margin-top:14px"><h3 style="margin:0 0 8px">一根网线怎么接？</h3><div class="chain"><span class="chip">主路由 LAN</span><span class="chev">→</span><span class="chip">网线（可经过交换机）</span><span class="chev">→</span><span class="chip">Mesh 子节点上联口</span></div><div class="chain"><span class="chip">子节点剩余 LAN 口</span><span class="chev">→</span><span class="chip">电脑 / 交换机</span><span class="chev">→</span><span class="chip">更多有线设备</span></div><p class="section-note" style="margin:10px 0 0">前提是子节点有可用网口。不同小米型号的端口数量、上联口名称和供电方式不同，请以对应说明书为准。</p></div>
-        <div class="compare-note">一句话区分：AP 是“发 Wi-Fi 的角色”，Mesh 是“多个节点协同的方法”；交换机则管有线连接。支持 Mesh 的路由器也在充当 Wi-Fi 接入点。</div>
-        <div class="quiz" style="margin-top:14px">
-          <article class="panel qcard planning-card"><h3>走到另一个房间，会自动换节点吗？</h3><p>可以。兼容的小米 Mesh 节点会协同提供 Wi-Fi；多台 AP 配成同一网络名称和安全设置后，终端也可能自行漫游，兼容的 AC / AP 漫游功能还能提供辅助。通常无需手动重连，但<strong>不保证每次都完全无感</strong>。正在通话、游戏或视频会议时，仍可能察觉短暂波动。</p></article>
-          <article class="panel qcard planning-card"><h3>一定连“最近、网速最快”的节点吗？</h3><p>不一定。终端通常参与决定何时切换和连接哪个节点；信号、干扰、回程质量、设备能力都会影响结果。802.11k/v/r 等功能可帮助缩短或优化切换，但要看节点、终端和配置是否支持。把不同品牌的 Mesh 与 AP 放在一起，也不等于组成同一套协同漫游系统。</p></article>
+      </div>
+    </section>
+
+    <section id="devices" class="sect">
+      <div class="wrap">
+        <div class="sect__head">
+          <p class="sect__no" aria-hidden="true">03</p>
+          <div>
+            <h2>五种角色，各负责什么？</h2>
+            <p class="sect__note">AC 是管理功能，可能独立成设备，也可能集成在路由器里。</p>
+          </div>
         </div>
-        <div class="panel scenario" style="margin-top:14px"><h3 style="margin:0 0 8px">AP 的网线会顺便供电吗？</h3><p>普通路由器 LAN 口通常只提供网络数据，<strong>不默认给 AP 供电</strong>。AP 的供电方式看具体型号：有的接电源适配器，有的支持 PoE 网线供电，也有型号两种都支持。</p><div class="chain"><span class="chip">路由器 / 普通交换机</span><span class="chev">→</span><span class="chip">网线传数据</span><span class="chev">→</span><span class="chip">AP ＋ 电源适配器</span></div><div class="chain"><span class="chip">路由器 LAN</span><span class="chev">→</span><span class="chip">PoE 交换机或 PoE 注入器</span><span class="chev">→</span><span class="chip">支持对应 PoE 的 AP</span></div><p class="section-note" style="margin:10px 0 0">买之前核对 AP 所需的 PoE 标准、功率和供电方式；PoE 交换机或注入器负责供电，路由器本身无需有 PoE 功能。</p></div>
-      </section>
-      <section id="wiring">
-        <h2>05｜实际接线，按你家的情况选</h2>
-        <p class="section-note">先看谁负责连接运营商网络。宽带账号密码跟着“拨号的设备”走，不是永远填在光猫里。</p>
-        <div class="panel scenario">
+
+        <div class="rail">
+          <article class="rail__item">
+            <svg class="ic" aria-hidden="true"><use href="#i-exchange"/></svg>
+            <h3>光猫 / ONT</h3>
+            <p>接入运营商光纤；可桥接转发，也可能兼做路由与宽带拨号。</p>
+            <b>关键词：光纤入口</b>
+          </article>
+          <article class="rail__item">
+            <svg class="ic" aria-hidden="true"><use href="#i-router"/></svg>
+            <h3>路由器</h3>
+            <p>连接不同网络，决定数据去向；家用场景通常兼做 DHCP 和 NAT。</p>
+            <b>关键词：网关 / 带路</b>
+          </article>
+          <article class="rail__item">
+            <svg class="ic" aria-hidden="true"><use href="#i-split"/></svg>
+            <h3>交换机</h3>
+            <p>路由器自带的 LAN 口够用就不需要它；口不够时，它能把同一个局域网扩展给更多有线设备。</p>
+            <b>关键词：按需扩有线口</b>
+          </article>
+          <article class="rail__item">
+            <svg class="ic" aria-hidden="true"><use href="#i-ap"/></svg>
+            <h3>无线 AP</h3>
+            <p>把有线局域网延伸为 Wi-Fi；供电方式可能是适配器、PoE 或两者兼容。</p>
+            <b>关键词：扩无线覆盖</b>
+          </article>
+          <article class="rail__item">
+            <svg class="ic" aria-hidden="true"><use href="#i-ac"/></svg>
+            <h3>AC / 无线控制器</h3>
+            <p>统一管理多个 AP 的名称、密码和无线参数；不负责替代 AP 发出 Wi-Fi。</p>
+            <b>关键词：管多个 AP</b>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="mesh" class="sect band">
+      <div class="wrap">
+        <div class="sect__head">
+          <p class="sect__no" aria-hidden="true">04</p>
+          <div>
+            <h2>Mesh、AP 与走动时的切换</h2>
+            <p class="sect__note">Mesh 强调兼容节点的协同；AP 是提供 Wi-Fi 接入的设备角色。两种方案都可以改善多房间覆盖。</p>
+          </div>
+        </div>
+
+        <div class="tri">
+          <article class="tri__col">
+            <svg class="ic" aria-hidden="true"><use href="#i-mesh"/></svg>
+            <h3>小米 Mesh</h3>
+            <p>一台作主路由，其他作子节点，协同提供 Wi-Fi。子节点可用<strong>一根网线</strong>作回程；若有剩余网口，还能接有线设备。</p>
+          </article>
+          <article class="tri__col">
+            <svg class="ic" aria-hidden="true"><use href="#i-ac"/></svg>
+            <h3>AC + AP</h3>
+            <p>AP 提供 Wi-Fi 接入；AC 统一管理多个 AP。AC 可能独立成设备，也可能集成在路由器中。</p>
+          </article>
+          <article class="tri__col">
+            <svg class="ic" aria-hidden="true"><use href="#i-split"/></svg>
+            <h3>交换机</h3>
+            <p>只负责连接和扩展<strong>有线网口</strong>，不发 Wi-Fi。可接在主路由与 Mesh 子节点之间，也可接在子节点剩余网口后面。</p>
+          </article>
+        </div>
+
+        <div class="conclusion">
+          <svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>
+          <p>一句话区分：AP 是“发 Wi-Fi 的角色”，Mesh 是“多个节点协同的方法”；交换机则管有线连接。支持 Mesh 的路由器也在充当 Wi-Fi 接入点。</p>
+        </div>
+
+        <div class="panel notecard" style="margin-top:20px">
+          <h3>一根网线怎么接？</h3>
+          <div class="chain">
+            <span>主路由 LAN</span>
+            <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <span>网线（可经过交换机）</span>
+            <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <span>Mesh 子节点上联口</span>
+          </div>
+          <div class="chain">
+            <span>子节点剩余 LAN 口</span>
+            <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <span>电脑 / 交换机</span>
+            <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <span>更多有线设备</span>
+          </div>
+          <p class="sect__note" style="margin-top:14px">前提是子节点有可用网口。不同小米型号的端口数量、上联口名称和供电方式不同，请以对应说明书为准。</p>
+        </div>
+
+        <div class="twoup" style="margin-top:20px">
+          <article class="panel notecard">
+            <h3>走到另一个房间，会自动换节点吗？</h3>
+            <p>可以。兼容的小米 Mesh 节点会协同提供 Wi-Fi；多台 AP 配成同一网络名称和安全设置后，终端也可能自行漫游，兼容的 AC / AP 漫游功能还能提供辅助。通常无需手动重连，但<strong>不保证每次都完全无感</strong>。正在通话、游戏或视频会议时，仍可能察觉短暂波动。</p>
+          </article>
+          <article class="panel notecard">
+            <h3>一定连“最近、网速最快”的节点吗？</h3>
+            <p>不一定。终端通常参与决定何时切换和连接哪个节点；信号、干扰、回程质量、设备能力都会影响结果。802.11k/v/r 等功能可帮助缩短或优化切换，但要看节点、终端和配置是否支持。把不同品牌的 Mesh 与 AP 放在一起，也不等于组成同一套协同漫游系统。</p>
+          </article>
+        </div>
+
+        <div class="panel notecard" style="margin-top:20px">
+          <h3>AP 的网线会顺便供电吗？</h3>
+          <p>普通路由器 LAN 口通常只提供网络数据，<strong>不默认给 AP 供电</strong>。AP 的供电方式看具体型号：有的接电源适配器，有的支持 PoE 网线供电，也有型号两种都支持。</p>
+          <div class="chain">
+            <span>路由器 / 普通交换机</span>
+            <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <span>网线传数据</span>
+            <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <span>AP ＋ 电源适配器</span>
+          </div>
+          <div class="chain">
+            <span>路由器 LAN</span>
+            <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <span>PoE 交换机或 PoE 注入器</span>
+            <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+            <span>支持对应 PoE 的 AP</span>
+          </div>
+          <p class="sect__note" style="margin-top:14px">买之前核对 AP 所需的 PoE 标准、功率和供电方式；PoE 交换机或注入器负责供电，路由器本身无需有 PoE 功能。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="wiring" class="sect">
+      <div class="wrap">
+        <div class="sect__head">
+          <p class="sect__no" aria-hidden="true">05</p>
+          <div>
+            <h2>实际接线，按你家的情况选</h2>
+            <p class="sect__note">先看谁负责连接运营商网络。宽带账号密码跟着“拨号的设备”走，不是永远填在光猫里。</p>
+          </div>
+        </div>
+
+        <div class="panel notecard">
           <div class="tabs" role="tablist" aria-label="接线场景">
             <button type="button" role="tab" id="tab-bridge" aria-controls="view-bridge" aria-selected="true">光猫桥接 · 路由器拨号</button>
-            <button type="button" role="tab" id="tab-route" aria-controls="view-route" aria-selected="false">光猫已经在路由</button>
+            <button type="button" role="tab" id="tab-route" aria-controls="view-route" aria-selected="false" tabindex="-1">光猫已经在路由</button>
           </div>
-          <div class="scenario-view active" id="view-bridge" role="tabpanel" aria-labelledby="tab-bridge">
-            <div class="chain"><span class="chip">光纤</span><span class="chev">→</span><span class="chip">光猫（桥接）</span><span class="chev">→</span><span class="chip">主路由 WAN：PPPoE 账号 / 密码</span><span class="chev">→</span><span class="chip">路由器 LAN / Wi-Fi</span><span class="chev">→</span><span class="chip">家中设备</span></div>
+
+          <div class="view is-active" id="view-bridge" role="tabpanel" aria-labelledby="tab-bridge" tabindex="0">
+            <div class="chain">
+              <span>光纤</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <span>光猫（桥接）</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <span>主路由 WAN：PPPoE 账号 / 密码</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <span>路由器 LAN / Wi-Fi</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <span>家中设备</span>
+            </div>
             <p>如果运营商采用 PPPoE，<strong>宽带账号和密码填在主路由器的上网设置</strong>，由它拨号、分配家庭内网地址；光猫在这里负责光纤接入和桥接转发。主路由 LAN 口够用就直接接设备，不够再接交换机。桥接光猫的多个网口未必都能用于同一条上网连接，有的会被运营商分配给 IPTV 等业务。</p>
           </div>
-          <div class="scenario-view" id="view-route" role="tabpanel" aria-labelledby="tab-route">
-            <div class="chain"><span class="chip">光纤</span><span class="chev">→</span><span class="chip">光猫：路由 / PPPoE 拨号（如需）</span><span class="chev">→</span><span class="chip">光猫 LAN</span><span class="chev">→</span><span class="chip">设备 / AP</span></div>
+
+          <div class="view" id="view-route" role="tabpanel" aria-labelledby="tab-route" tabindex="0">
+            <div class="chain">
+              <span>光纤</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <span>光猫：路由 / PPPoE 拨号（如需）</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <span>光猫 LAN</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <span>设备 / AP</span>
+            </div>
             <p>光猫若已经承担路由和 DHCP，且运营商采用 PPPoE，<strong>宽带账号和密码配置在光猫的上网连接里</strong>；有些宽带使用自动获取地址等方式，不需要用户填写 PPPoE 账号。光猫可用的 LAN 口能直接接电脑等设备，口够用就不用交换机。另一台无线路由器若只是增加网口或无线覆盖，可按设备说明设为 AP 模式。</p>
-            <p class="caution">若光猫和下级路由器都以路由模式工作，常会形成双重 NAT；普通上网通常可用，但端口映射、游戏联机等场景可能更麻烦。</p>
+            <div class="caution">
+              <svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>
+              <p>若光猫和下级路由器都以路由模式工作，常会形成双重 NAT；普通上网通常可用，但端口映射、游戏联机等场景可能更麻烦。</p>
+            </div>
           </div>
         </div>
-      </section>
-      <section id="planning">
-        <h2>06｜布网前，先做四个判断</h2>
-        <p class="section-note">先盘点需求，再决定要不要增加设备；不必把每一种设备都买齐。</p>
-        <div class="quiz">
-          <article class="panel qcard planning-card"><h3>① 哪些设备需要有线？</h3><p>列出电脑、电视、游戏机、NAS 等设备和所在房间，数清需要的网口。主路由的 LAN 口够用就直接接；不够或想在一个房间分出多个口，再加交换机。</p></article>
-          <article class="panel qcard planning-card"><h3>② 哪些房间 Wi-Fi 弱？</h3><p>先看实际使用位置和信号，再按需增加无线 AP 或 Mesh 子节点。能布网线时，可优先考虑有线回程；负责发 Wi-Fi 的设备尽量放在开放位置，别把它藏在金属弱电箱或角落里。</p></article>
-          <article class="panel qcard planning-card"><h3>③ 谁负责当主路由？</h3><p>确认光猫是桥接还是路由模式，再决定下级路由器的工作模式。这样更容易把家中设备放在预期的同一网络，避免无意产生双重 NAT。</p></article>
-          <article class="panel qcard planning-card"><h3>④ 线和电源怎么到位？</h3><p>画出光猫、主路由、各房间网口和无线节点的位置，预留网线与供电。主路由可以同时连接交换机、AP 和 Mesh 子节点；它们都按需求选配。</p></article>
+      </div>
+    </section>
+
+    <section id="planning" class="sect">
+      <div class="wrap">
+        <div class="sect__head">
+          <p class="sect__no" aria-hidden="true">06</p>
+          <div>
+            <h2>布网前，先做四个判断</h2>
+            <p class="sect__note">先盘点需求，再决定要不要增加设备；不必把每一种设备都买齐。</p>
+          </div>
         </div>
-        <div class="panel scenario" style="margin-top:14px"><h3 style="margin:0 0 8px">按需求选设备，不按拓扑图照单购买</h3><div class="chain"><span class="chip">覆盖与网口都够</span><span class="chev">→</span><span>先用现有设备</span></div><div class="chain"><span class="chip">有线网口不够</span><span class="chev">→</span><span>加交换机</span></div><div class="chain"><span class="chip">某些房间 Wi-Fi 弱</span><span class="chev">→</span><span>优先看布点与网线条件，再选 AP 或兼容 Mesh</span></div><div class="chain"><span class="chip">多台 AP 要统一管理</span><span class="chev">→</span><span>考虑支持它们的 AC / 控制器</span></div></div>
-        <div class="compare-grid" style="margin-top:14px">
-          <article class="panel compare-card"><h3>小户型，覆盖已足够</h3><p>光猫加一台主路由通常就够。先测常用房间，再决定是否增加设备。</p></article>
-          <article class="panel compare-card"><h3>多房间，已经布网线</h3><p>从主路由 LAN 口或交换机接到各房间网口，按弱覆盖位置增加有线 AP 或支持有线回程的 Mesh 节点；注意节点还需要合适的供电。</p></article>
-          <article class="panel compare-card"><h3>多房间，暂时没有网线</h3><p>可考虑兼容的无线 Mesh；子节点要放在既能收到上级信号、又能覆盖目标房间的位置。无线回程效果受墙体、距离和干扰影响。</p></article>
+
+        <div class="judge">
+          <article class="judge__item">
+            <p class="judge__no" aria-hidden="true">01</p>
+            <div>
+              <h3>哪些设备需要有线？</h3>
+              <p>列出电脑、电视、游戏机、NAS 等设备和所在房间，数清需要的网口。主路由的 LAN 口够用就直接接；不够或想在一个房间分出多个口，再加交换机。</p>
+            </div>
+          </article>
+          <article class="judge__item">
+            <p class="judge__no" aria-hidden="true">02</p>
+            <div>
+              <h3>哪些房间 Wi-Fi 弱？</h3>
+              <p>先看实际使用位置和信号，再按需增加无线 AP 或 Mesh 子节点。能布网线时，可优先考虑有线回程；负责发 Wi-Fi 的设备尽量放在开放位置，别把它藏在金属弱电箱或角落里。</p>
+            </div>
+          </article>
+          <article class="judge__item">
+            <p class="judge__no" aria-hidden="true">03</p>
+            <div>
+              <h3>谁负责当主路由？</h3>
+              <p>确认光猫是桥接还是路由模式，再决定下级路由器的工作模式。这样更容易把家中设备放在预期的同一网络，避免无意产生双重 NAT。</p>
+            </div>
+          </article>
+          <article class="judge__item">
+            <p class="judge__no" aria-hidden="true">04</p>
+            <div>
+              <h3>线和电源怎么到位？</h3>
+              <p>画出光猫、主路由、各房间网口和无线节点的位置，预留网线与供电。主路由可以同时连接交换机、AP 和 Mesh 子节点；它们都按需求选配。</p>
+            </div>
+          </article>
         </div>
-        <div class="panel scenario" style="margin-top:14px"><h3 style="margin:0 0 8px">装好后怎么验收？</h3><p>① 每个常用房间都能稳定连接；② 墙上网口和有线设备能正常上网；③ 走动时观察是否切换到更合适的无线节点；④ 确认光猫与下级路由器的模式符合预期，没有无意产生双重 NAT；⑤ 记录设备位置、上联关系和管理入口，方便以后维护。</p></div>
-      </section>
-      <section id="glossary">
-        <h2>07｜布网时常见的几个词</h2>
-        <p class="section-note">先知道它们各管什么，不必一开始就记设置页面里的所有参数。</p>
-        <div class="quiz">
-          <article class="panel qcard planning-card"><h3>PPPoE · 宽带拨号</h3><p>部分运营商用宽带账号和密码验证上网。账号填在负责拨号的光猫或路由器上；并非所有宽带都采用 PPPoE。</p></article>
-          <article class="panel qcard planning-card"><h3>DHCP · 自动分配地址</h3><p>通常由家庭中的主路由负责给手机、电脑等设备分配局域网 IP 地址。</p></article>
-          <article class="panel qcard planning-card"><h3>NAT · 多设备共享上网</h3><p>家庭网关常用它让多个内网设备共用上游连接。光猫和下级路由器都做路由时，可能形成双重 NAT。</p></article>
-          <article class="panel qcard planning-card"><h3>SSID · Wi-Fi 名称</h3><p>就是设备上看到的无线网络名称。相同名称便于使用，但不单凭“名字相同”保证快速、无感漫游。</p></article>
-          <article class="panel qcard planning-card"><h3>回程 · 节点之间的连接</h3><p>Mesh 子节点把流量送回主节点的路径；可走网线，也可按设备能力走无线。回程质量会影响终端体验。</p></article>
-          <article class="panel qcard planning-card"><h3>PoE · 网线供电</h3><p>由兼容的 PoE 交换机或注入器通过网线给 AP 等设备供电。普通交换机或路由器 LAN 口不等于 PoE 口。</p></article>
+
+        <div class="panel notecard" style="margin-top:24px">
+          <h3>按需求选设备，不按拓扑图照单购买</h3>
+          <div class="decision" style="margin-top:14px">
+            <div class="decision__row">
+              <span class="tag tag--in"><svg class="ic" aria-hidden="true"><use href="#i-in"/></svg>覆盖与网口都够</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <b>先用现有设备</b>
+            </div>
+            <div class="decision__row">
+              <span class="tag tag--in"><svg class="ic" aria-hidden="true"><use href="#i-split"/></svg>有线网口不够</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <b>加交换机</b>
+            </div>
+            <div class="decision__row">
+              <span class="tag tag--in"><svg class="ic" aria-hidden="true"><use href="#i-ap"/></svg>某些房间 Wi-Fi 弱</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <b>优先看布点与网线条件，再选 AP 或兼容 Mesh</b>
+            </div>
+            <div class="decision__row">
+              <span class="tag tag--in"><svg class="ic" aria-hidden="true"><use href="#i-ac"/></svg>多台 AP 要统一管理</span>
+              <span class="chev" aria-hidden="true"><svg class="ic"><use href="#i-arrow-right"/></svg></span>
+              <b>考虑支持它们的 AC / 控制器</b>
+            </div>
+          </div>
         </div>
-      </section>
-      <section id="quiz">
-        <h2>08｜四道题，确认记住了</h2>
-        <p class="section-note">点选答案，马上看解释。</p>
-        <div class="quiz">
-          <div class="panel qcard"><h3>电脑有线网口不够，通常加什么？</h3><div class="answers"><button data-answer="no">AP</button><button data-answer="yes">交换机</button></div><p class="feedback" aria-live="polite"></p></div>
-          <div class="panel qcard"><h3>某个房间 Wi-Fi 信号弱，通常加什么？</h3><div class="answers"><button data-answer="yes">AP 或兼容的 Mesh 子节点</button><button data-answer="no">普通交换机</button></div><p class="feedback" aria-live="polite"></p></div>
-          <div class="panel qcard"><h3>桥接光猫一般接到路由器哪个口？</h3><div class="answers"><button data-answer="no">LAN 口</button><button data-answer="yes">WAN 口</button></div><p class="feedback" aria-live="polite"></p></div>
-          <div class="panel qcard"><h3>多台 AP 想统一设置，谁来管理？</h3><div class="answers"><button data-answer="yes">AC</button><button data-answer="no">普通交换机</button></div><p class="feedback" aria-live="polite"></p></div>
+
+        <div class="contexts">
+          <article class="panel context">
+            <svg class="ic" aria-hidden="true"><use href="#i-router"/></svg>
+            <h3>小户型，覆盖已足够</h3>
+            <p>光猫加一台主路由通常就够。先测常用房间，再决定是否增加设备。</p>
+          </article>
+          <article class="panel context">
+            <svg class="ic" aria-hidden="true"><use href="#i-ap"/></svg>
+            <h3>多房间，已经布网线</h3>
+            <p>从主路由 LAN 口或交换机接到各房间网口，按弱覆盖位置增加有线 AP 或支持有线回程的 Mesh 节点；注意节点还需要合适的供电。</p>
+          </article>
+          <article class="panel context">
+            <svg class="ic" aria-hidden="true"><use href="#i-mesh"/></svg>
+            <h3>多房间，暂时没有网线</h3>
+            <p>可考虑兼容的无线 Mesh；子节点要放在既能收到上级信号、又能覆盖目标房间的位置。无线回程效果受墙体、距离和干扰影响。</p>
+          </article>
         </div>
-      </section>
-      <section class="panel summary"><h2>最后只记这一句</h2><p><strong>光猫接光纤，路由器管方向；交换机扩有线，AP 发 Wi-Fi，AC 管多个 AP，Mesh 管多节点协同；WAN 往外，LAN 留家。</strong></p><p>想看可缩放、可搜索的连接图？打开 <a href="家庭网络拓扑图.html">家庭网络拓扑图</a>。</p></section>
-    </main>
-    <footer class="footer">说明：不同运营商、设备型号与工作模式会改变实际端口名称和接法，接线前以设备管理界面和说明书为准。参考：<a target="_blank" rel="noopener noreferrer" href="https://www.mi.com/mesh">小米 Mesh 官方说明</a>、<a target="_blank" rel="noopener noreferrer" href="https://www.tp-link.com/uk/support/faq/2097/">TP-Link 漫游说明</a>、<a target="_blank" rel="noopener noreferrer" href="https://consumer.huawei.com/cn/support/content/zh-cn15933071/">华为桥接光猫接线说明</a>、<a target="_blank" rel="noopener noreferrer" href="https://static.tp-link.com/upload/manual/2022/202210/20221019/7106509871_EAP650_IG_V1.pdf">TP-Link AP 供电说明</a>。</footer>
-  </div>
+
+        <div class="panel notecard" style="margin-top:24px">
+          <h3 style="display:flex;align-items:center;gap:10px">
+            <svg class="ic" aria-hidden="true" style="width:20px;height:20px;color:var(--teal)"><use href="#i-checklist"/></svg>
+            装好后怎么验收？
+          </h3>
+          <ul class="checklist" style="margin-top:10px">
+            <li><label><input type="checkbox"><span>每个常用房间都能稳定连接</span></label></li>
+            <li><label><input type="checkbox"><span>墙上网口和有线设备能正常上网</span></label></li>
+            <li><label><input type="checkbox"><span>走动时观察是否切换到更合适的无线节点</span></label></li>
+            <li><label><input type="checkbox"><span>确认光猫与下级路由器的模式符合预期，没有无意产生双重 NAT</span></label></li>
+            <li><label><input type="checkbox"><span>记录设备位置、上联关系和管理入口，方便以后维护</span></label></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="glossary" class="sect band">
+      <div class="wrap">
+        <div class="sect__head">
+          <p class="sect__no" aria-hidden="true">07</p>
+          <div>
+            <h2>布网时常见的几个词</h2>
+            <p class="sect__note">先知道它们各管什么，不必一开始就记设置页面里的所有参数。</p>
+          </div>
+        </div>
+
+        <div class="glossary">
+          <div class="term">
+            <p class="mono-label">PPPoE</p>
+            <h3>宽带拨号</h3>
+            <p>部分运营商用宽带账号和密码验证上网。账号填在负责拨号的光猫或路由器上；并非所有宽带都采用 PPPoE。</p>
+          </div>
+          <div class="term">
+            <p class="mono-label">SSID</p>
+            <h3>Wi-Fi 名称</h3>
+            <p>就是设备上看到的无线网络名称。相同名称便于使用，但不单凭“名字相同”保证快速、无感漫游。</p>
+          </div>
+          <div class="term">
+            <p class="mono-label">DHCP</p>
+            <h3>自动分配地址</h3>
+            <p>通常由家庭中的主路由负责给手机、电脑等设备分配局域网 IP 地址。</p>
+          </div>
+          <div class="term">
+            <p class="mono-label">回程</p>
+            <h3>节点之间的连接</h3>
+            <p>Mesh 子节点把流量送回主节点的路径；可走网线，也可按设备能力走无线。回程质量会影响终端体验。</p>
+          </div>
+          <div class="term">
+            <p class="mono-label">NAT</p>
+            <h3>多设备共享上网</h3>
+            <p>家庭网关常用它让多个内网设备共用上游连接。光猫和下级路由器都做路由时，可能形成双重 NAT。</p>
+          </div>
+          <div class="term">
+            <p class="mono-label">PoE</p>
+            <h3>网线供电</h3>
+            <p>由兼容的 PoE 交换机或注入器通过网线给 AP 等设备供电。普通交换机或路由器 LAN 口不等于 PoE 口。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="sect">
+      <div class="wrap">
+        <div class="sect__head">
+          <p class="sect__no" aria-hidden="true">08</p>
+          <div>
+            <h2>四道题，确认记住了</h2>
+            <p class="sect__note">点选答案，马上看解释。</p>
+          </div>
+        </div>
+
+        <div class="quizgrid">
+          <article class="panel qcard">
+            <h3>电脑有线网口不够，通常加什么？</h3>
+            <div class="answers">
+              <button type="button" data-answer="no">AP<svg class="ic mark mark-no" aria-hidden="true"><use href="#i-x"/></svg></button>
+              <button type="button" data-answer="yes">交换机<svg class="ic mark mark-ok" aria-hidden="true"><use href="#i-check"/></svg></button>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="panel qcard">
+            <h3>某个房间 Wi-Fi 信号弱，通常加什么？</h3>
+            <div class="answers">
+              <button type="button" data-answer="yes">AP 或兼容的 Mesh 子节点<svg class="ic mark mark-ok" aria-hidden="true"><use href="#i-check"/></svg></button>
+              <button type="button" data-answer="no">普通交换机<svg class="ic mark mark-no" aria-hidden="true"><use href="#i-x"/></svg></button>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="panel qcard">
+            <h3>桥接光猫一般接到路由器哪个口？</h3>
+            <div class="answers">
+              <button type="button" data-answer="no">LAN 口<svg class="ic mark mark-no" aria-hidden="true"><use href="#i-x"/></svg></button>
+              <button type="button" data-answer="yes">WAN 口<svg class="ic mark mark-ok" aria-hidden="true"><use href="#i-check"/></svg></button>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="panel qcard">
+            <h3>多台 AP 想统一设置，谁来管理？</h3>
+            <div class="answers">
+              <button type="button" data-answer="yes">AC<svg class="ic mark mark-ok" aria-hidden="true"><use href="#i-check"/></svg></button>
+              <button type="button" data-answer="no">普通交换机<svg class="ic mark mark-no" aria-hidden="true"><use href="#i-x"/></svg></button>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </article>
+        </div>
+
+        <p class="quiz__score">答对 <span class="n" id="scoreValue">0</span> / <span class="n" id="scoreTotal">4</span> 题</p>
+      </div>
+    </section>
+
+    <section class="sect">
+      <div class="wrap">
+        <section class="summary">
+          <h2>最后只记这一句</h2>
+          <p><strong>光猫接光纤，路由器管方向；交换机扩有线，AP 发 Wi-Fi，AC 管多个 AP，Mesh 管多节点协同；WAN 往外，LAN 留家。</strong></p>
+          <p>想看可缩放、可搜索的连接图？打开 <a href="家庭网络拓扑图.html">家庭网络拓扑图</a>。</p>
+        </section>
+
+        <footer class="footer">
+          说明：不同运营商、设备型号与工作模式会改变实际端口名称和接法，接线前以设备管理界面和说明书为准。图标来自 Tabler Icons（MIT 许可）。参考：<a target="_blank" rel="noopener noreferrer" href="https://www.mi.com/mesh">小米 Mesh 官方说明</a>、<a target="_blank" rel="noopener noreferrer" href="https://www.tp-link.com/uk/support/faq/2097/">TP-Link 漫游说明</a>、<a target="_blank" rel="noopener noreferrer" href="https://consumer.huawei.com/cn/support/content/zh-cn15933071/">华为桥接光猫接线说明</a>、<a target="_blank" rel="noopener noreferrer" href="https://static.tp-link.com/upload/manual/2022/202210/20221019/7106509871_EAP650_IG_V1.pdf">TP-Link AP 供电说明</a>。
+        </footer>
+      </div>
+    </section>
+  </main>
+
   <script>
-    const details={
-      internet:["互联网：家门外的大网络","运营商把外部网络连接送到你家；家里的手机、电脑通过路由器访问它。"],
-      ont:["光猫：光纤进家的入口","光猫（ONT）连接运营商光纤，可处于桥接或路由模式。若它负责 PPPoE 拨号，宽带账号密码配在光猫；若桥接并由主路由拨号，就配在主路由。也有不需要 PPPoE 账号的接入方式。"],
-      router:["路由器：决定数据往哪走","通常用 WAN 口接上游，用 LAN 口接家里设备；一般还会给设备分配地址（DHCP），并让多台设备共用外网连接（NAT）。"],
-      switch:["交换机：网口不够时再加","家用路由器通常已内置交换功能和多个 LAN 口；这些口够用就不用额外交换机。它主要用于增加有线口，或在另一个房间用一根网线接出多个口。"],
-      ap:["AP：把有线网络变成无线入口","它通过网线连入局域网，让手机等设备用 Wi-Fi 接入。普通路由器 LAN 口通常只传数据；AP 可按型号使用电源适配器，或由兼容的 PoE 交换机、注入器通过网线供电。"],
-      ac:["AC：统一管理多个 AP","它可以是独立设备、软件，也可以集成在路由器里。它管多个 AP 的配置，不代替路由器决定上网方向，也不代替 AP 发 Wi-Fi。"],
-      mesh:["小米 Mesh：多台路由器协同覆盖","Mesh 是组网方式。子节点可用一根网线连接主路由或其后的交换机；如果还有可用 LAN 口，可继续接电脑或交换机。无线回程也可用，具体以型号支持为准。"]
-    };
-    document.querySelectorAll("[data-detail]").forEach(button=>button.addEventListener("click",()=>{
-      document.querySelectorAll("[data-detail]").forEach(el=>{el.classList.remove("active");el.setAttribute("aria-pressed","false")});
-      button.classList.add("active");button.setAttribute("aria-pressed","true");
-      const [title,body]=details[button.dataset.detail];
-      const box=document.querySelector("#detail");box.querySelector("strong").textContent=title;box.querySelector("p").textContent=body;
-    }));
-    document.querySelectorAll('[role="tab"]').forEach(tab=>tab.addEventListener("click",()=>{
-      document.querySelectorAll('[role="tab"]').forEach(el=>el.setAttribute("aria-selected","false"));
-      document.querySelectorAll(".scenario-view").forEach(el=>el.classList.remove("active"));
-      tab.setAttribute("aria-selected","true");document.querySelector("#"+tab.getAttribute("aria-controls")).classList.add("active");
-    }));
-    document.querySelectorAll(".qcard").forEach(card=>card.querySelectorAll("[data-answer]").forEach(button=>button.addEventListener("click",()=>{
-      card.querySelectorAll("[data-answer]").forEach(el=>el.classList.remove("correct","wrong"));
-      const right=button.dataset.answer==="yes";button.classList.add(right?"correct":"wrong");
-      card.querySelector(".feedback").textContent=right?"答对了！抓住了它的核心职责。":"再想想：交换机扩有线，AP 和 Mesh 子节点可扩 Wi-Fi，AC 管 AP；路由器 WAN 接上游。";
-    })));
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ---------- 主题切换：手动选择写入 localStorage，首屏由 head 内脚本决定 ---------- */
+      var root = document.documentElement;
+      var toggle = document.getElementById('themeToggle');
+      function syncToggle() {
+        toggle.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
+      }
+      syncToggle();
+      toggle.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('home-network-theme', next); } catch (_) {}
+        syncToggle();
+      });
+
+      /* ---------- §01 点设备看说明 ---------- */
+      var details = {
+        internet: ['互联网：家门外的大网络', '运营商把外部网络连接送到你家；家里的手机、电脑通过路由器访问它。'],
+        ont: ['光猫：光纤进家的入口', '光猫（ONT）连接运营商光纤，可处于桥接或路由模式。若它负责 PPPoE 拨号，宽带账号密码配在光猫；若桥接并由主路由拨号，就配在主路由。也有不需要 PPPoE 账号的接入方式。'],
+        router: ['路由器：决定数据往哪走', '通常用 WAN 口接上游，用 LAN 口接家里设备；一般还会给设备分配地址\u2060（DHCP），并让多台设备共用外网连接\u2060（NAT）。'],
+        switch: ['交换机：网口不够时再加', '家用路由器通常已内置交换功能和多个 LAN 口；这些口够用就不用额外交换机。它主要用于增加有线口，或在另一个房间用一根网线接出多个口。'],
+        ap: ['AP：把有线网络变成无线入口', '它通过网线连入局域网，让手机等设备用 Wi-Fi 接入。普通路由器 LAN 口通常只传数据；AP 可按型号使用电源适配器，或由兼容的 PoE 交换机、注入器通过网线供电。'],
+        ac: ['AC：统一管理多个 AP', '它可以是独立设备、软件，也可以集成在路由器里。它管多个 AP 的配置，不代替路由器决定上网方向，也不代替 AP 发 Wi-Fi。'],
+        mesh: ['小米 Mesh：多台路由器协同覆盖', 'Mesh 是组网方式。子节点可用一根网线连接主路由或其后的交换机；如果还有可用 LAN 口，可继续接电脑或交换机。无线回程也可用，具体以型号支持为准。']
+      };
+      var detailBox = document.getElementById('detail');
+      var detailNodes = Array.prototype.slice.call(document.querySelectorAll('[data-detail]'));
+      detailNodes.forEach(function (node) {
+        node.addEventListener('click', function () {
+          detailNodes.forEach(function (el) {
+            el.setAttribute('aria-pressed', 'false');
+          });
+          node.setAttribute('aria-pressed', 'true');
+          var item = details[node.dataset.detail];
+          detailBox.querySelector('strong').textContent = item[0];
+          detailBox.querySelector('p').textContent = item[1];
+        });
+      });
+
+      /* ---------- §01 示意图进入视口时把数据路径点亮一次 ---------- */
+      var flow = document.querySelector('.flow');
+      if (flow && !reduce && 'IntersectionObserver' in window) {
+        var flowObserver = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              flow.classList.add('is-flow');
+              obs.disconnect();
+            }
+          });
+        }, { threshold: 0.45 });
+        flowObserver.observe(flow);
+      }
+
+      /* ---------- §05 页签：支持左右方向键、Home、End ---------- */
+      var tablist = document.querySelector('[role="tablist"]');
+      if (tablist) {
+        var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
+        function selectTab(tab, focus) {
+          tabs.forEach(function (el) {
+            var selected = el === tab;
+            el.setAttribute('aria-selected', selected ? 'true' : 'false');
+            el.tabIndex = selected ? 0 : -1;
+            document.getElementById(el.getAttribute('aria-controls')).classList.toggle('is-active', selected);
+          });
+          if (focus) tab.focus();
+        }
+        tabs.forEach(function (tab, i) {
+          tab.addEventListener('click', function () { selectTab(tab, false); });
+          tab.addEventListener('keydown', function (e) {
+            var next = null;
+            if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+            else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+            else if (e.key === 'Home') next = tabs[0];
+            else if (e.key === 'End') next = tabs[tabs.length - 1];
+            if (next) { e.preventDefault(); selectTab(next, true); }
+          });
+        });
+      }
+
+      /* ---------- §08 测验与计分 ---------- */
+      var cards = Array.prototype.slice.call(document.querySelectorAll('#quiz .qcard'));
+      var results = new Map();
+      var scoreValue = document.getElementById('scoreValue');
+      var scoreTotal = document.getElementById('scoreTotal');
+      scoreTotal.textContent = String(cards.length);
+      function renderScore() {
+        var right = 0;
+        results.forEach(function (ok) { if (ok) right += 1; });
+        scoreValue.textContent = String(right);
+      }
+      cards.forEach(function (card) {
+        var buttons = Array.prototype.slice.call(card.querySelectorAll('[data-answer]'));
+        var feedback = card.querySelector('.feedback');
+        buttons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            buttons.forEach(function (el) { el.classList.remove('correct', 'wrong'); });
+            var right = button.dataset.answer === 'yes';
+            button.classList.add(right ? 'correct' : 'wrong');
+            feedback.textContent = right
+              ? '答对了！抓住了它的核心职责。'
+              : '再想想：交换机扩有线，AP 和 Mesh 子节点可扩 Wi-Fi，AC 管 AP；路由器 WAN 接上游。';
+            results.set(card, right);
+            renderScore();
+          });
+        });
+      });
+      renderScore();
+
+      /* ---------- 吸顶导航：当前章节高亮 + 窄屏自动把当前项滚进视野 ----------
+         观察带取视口中段。刚打开页面时视口顶部被引言占满，可能没有任何章节落在
+         观察带里，所以先把第一节点亮，并在观察带为空时保留上一次的高亮，
+         避免导航出现“完全没有状态”的样子。 */
+      var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+      var navList = document.getElementById('subnavList');
+      var links = new Map();
+      Array.prototype.slice.call(navList.querySelectorAll('a')).forEach(function (a) {
+        links.set(a.getAttribute('href').slice(1), a);
+      });
+      if (sections.length && 'IntersectionObserver' in window) {
+        var ratios = new Map();
+        var current = null;
+        function setActive(id) {
+          if (!id || id === current) return;
+          current = id;
+          links.forEach(function (a, key) {
+            if (key === id) a.setAttribute('aria-current', 'location');
+            else a.removeAttribute('aria-current');
+          });
+          var active = links.get(id);
+          if (active && navList.scrollWidth > navList.clientWidth + 4) {
+            navList.scrollTo({
+              left: Math.max(0, active.offsetLeft - navList.clientWidth / 2 + active.offsetWidth / 2),
+              behavior: reduce ? 'auto' : 'smooth'
+            });
+          }
+        }
+        setActive(sections[0].id);
+        var spy = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            ratios.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+          });
+          var best = null, bestRatio = 0;
+          ratios.forEach(function (ratio, id) {
+            if (ratio > bestRatio) { bestRatio = ratio; best = id; }
+          });
+          if (best) setActive(best);
+        }, { rootMargin: '-40% 0px -45% 0px', threshold: [0, 0.1, 0.25, 0.5, 1] });
+        sections.forEach(function (s) { spy.observe(s); });
+      }
+    })();
   </script>
 </body>
 </html>
-
